@@ -7,9 +7,11 @@ const putasset = require('putasset')
 
 const platforms = require('./platforms')
 
-const version = execSync('git log -1 --pretty=%B', {
-  encoding: 'utf8',
-})
+const version =
+  'v' +
+  execSync('git log -1 --pretty=%B', {
+    encoding: 'utf8',
+  }).trim('')
 
 ;(async () => {
   const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/')
