@@ -1,6 +1,6 @@
 {
   "name": "@napi-rs/package-template-win32",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Template project for writing node package with napi-rs",
   "repository": "git@github.com:napi-rs/package-template.git",
   "license": "MIT",
