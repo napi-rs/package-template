@@ -5,26 +5,10 @@
   "main": "index.js",
   "repository": "git@github.com:napi-rs/package-template.git",
   "license": "MIT",
-  "keywords": [
-    "napi-rs",
-    "NAPI",
-    "N-API",
-    "Rust",
-    "node-addon",
-    "node-addon-api"
-  ],
-  "files": [
-    "index.d.ts",
-    "index.js"
-  ],
-  "os": [
-    "darwin",
-    "linux",
-    "win32"
-  ],
-  "cpu": [
-    "x64"
-  ],
+  "keywords": ["napi-rs", "NAPI", "N-API", "Rust", "node-addon", "node-addon-api"],
+  "files": ["index.d.ts", "index.js"],
+  "os": ["darwin", "linux", "win32"],
+  "cpu": ["x64"],
   "engines": {
     "node": ">= 8.9"
   },
@@ -35,7 +19,7 @@
   "scripts": {
     "build": "cargo build --release && napi --platform --release ./index",
     "build:debug": "cargo build && napi --platform ./index",
-    "prepublish": "node ./scripts/publish.js",
+    "prepublishOnly": "node ./scripts/publish.js",
     "test": "ava",
     "version": "node ./scripts/version.js"
   },
@@ -54,18 +38,10 @@
     "@node-rs/helper": "^0.2.1"
   },
   "lint-staged": {
-    "*.@(js|ts|tsx)": [
-      "prettier --write"
-    ],
-    "*.@(yml|yaml)": [
-      "prettier --parser yaml --write"
-    ],
-    "*.md": [
-      "prettier --parser markdown --write"
-    ],
-    "*.json": [
-      "prettier --parser json --write"
-    ]
+    "*.@(js|ts|tsx)": ["prettier --write"],
+    "*.@(yml|yaml)": ["prettier --parser yaml --write"],
+    "*.md": ["prettier --parser markdown --write"],
+    "*.json": ["prettier --parser json --write"]
   },
   "prettier": {
     "printWidth": 120,
