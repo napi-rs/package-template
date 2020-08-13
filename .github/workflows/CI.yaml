@@ -172,7 +172,7 @@ jobs:
         run: |
           if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$";
           then
-            node ./upload-to-release.js
+            node ./scripts/upload-to-release.js
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
             npm publish
           else
