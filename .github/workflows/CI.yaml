@@ -2,13 +2,10 @@ name: CI
 
 on:
   push:
-    branches:
-      - '**'
+    branches: [master, develop]
     tags-ignore:
       - '**'
   pull_request:
-    branches:
-      - '**'
 
 jobs:
   build:
@@ -135,6 +132,17 @@ jobs:
 
       - name: Test bindings
         run: yarn test
+
+  dependabot:
+    needs:
+      - test_binding
+    runs-on: ubuntu-latest
+    steps:
+      - name: auto-merge
+        uses: ridedott/dependabot-auto-merge-action@master
+        with:
+          GITHUB_LOGIN: dependabot[bot]
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish:
     name: Publish
