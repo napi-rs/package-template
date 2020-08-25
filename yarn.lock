@@ -349,10 +349,10 @@ astral-regex@^2.0.0:
   resolved "https://registry.npmjs.org/astral-regex/-/astral-regex-2.0.0.tgz#483143c567aeed4785759c0865786dc77d7d2e31"
   integrity sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==
 
-ava@^3.12.0:
-  version "3.12.0"
-  resolved "https://registry.yarnpkg.com/ava/-/ava-3.12.0.tgz#82c837cfcd3bec980f491cabb7ca1e2b071a16c7"
-  integrity sha512-NRzhU/w4lIzZqJ2sLYZ6C91ZNl5v6JOWC6gb89/9NaN05vXMQylJPbVFMF3aIah5e6Lo4Ub86aey0wZ+uL+FiQ==
+ava@^3.12.1:
+  version "3.12.1"
+  resolved "https://registry.yarnpkg.com/ava/-/ava-3.12.1.tgz#0181b5ca10d178539a0d503e0fc9244146303717"
+  integrity sha512-cS41+X+UfrcPed+CIgne/YV/6eWxaUjHEPH+W8WvNSqWTWku5YitjZGE5cMHFuJxwHELdR541xTBRn8Uwi4PSw==
   dependencies:
     "@concordance/react" "^2.0.0"
     acorn "^8.0.1"
