@@ -24,7 +24,7 @@
     "version": "node ./scripts/version.js"
   },
   "devDependencies": {
-    "@octokit/rest": "^18.0.3",
+    "@octokit/rest": "^18.0.4",
     "ava": "^3.12.1",
     "chalk": "^4.1.0",
     "husky": "^4.2.5",
