@@ -1,6 +1,6 @@
-const test = require('ava')
+import test from 'ava'
 
-const { sleep, sync } = require('../index')
+import { sleep, sync } from '../index'
 
 test('sync function from native code', (t) => {
   const fixture = 42
