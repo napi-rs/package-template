@@ -1,6 +1,6 @@
 {
   "name": "@napi-rs/package-template-linux",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "os": ["linux"],
   "main": "package-template.linux.node",
   "files": ["package-template.linux.node"],

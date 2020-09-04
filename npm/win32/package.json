@@ -1,6 +1,6 @@
 {
   "name": "@napi-rs/package-template-win32",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "os": ["win32"],
   "main": "package-template.win32.node",
   "files": ["package-template.win32.node"],
