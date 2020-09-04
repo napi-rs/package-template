@@ -1,16 +1,32 @@
 {
   "name": "@napi-rs/package-template-linux",
   "version": "0.0.6",
+  "os": [
+    "linux"
+  ],
+  "main": "package-template.linux.node",
+  "files": [
+    "package-template.linux.node"
+  ],
   "description": "Template project for writing node package with napi-rs",
-  "repository": "git@github.com:napi-rs/package-template.git",
+  "keywords": [
+    "napi-rs",
+    "NAPI",
+    "N-API",
+    "Rust",
+    "node-addon",
+    "node-addon-api"
+  ],
   "license": "MIT",
-  "keywords": ["napi-rs", "NAPI", "N-API", "Rust", "node-addon", "node-addon-api"],
-  "main": "index.linux.node",
-  "files": ["index.linux.node"],
+  "cpu": [
+    "x64"
+  ],
+  "engines": {
+    "node": ">= 8.9"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "os": ["linux"],
-  "cpu": ["x64"]
+  "repository": "git@github.com:napi-rs/package-template.git"
 }
