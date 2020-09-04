@@ -10,11 +10,14 @@ edition = "2018"
 crate-type = ["cdylib"]
 
 [dependencies]
-napi = { version = "0.4" }
-napi-derive = { version = "0.4" }
+napi = { version = "0.5" }
+napi-derive = { version = "0.5" }
 
 [target.'cfg(all(unix, not(target_env = "musl")))'.dependencies]
 jemallocator = { version = "0.3", features = ["disable_initial_exec_tls"] }
+
+[target.'cfg(windows)'.dependencies]
+mimalloc = { version = "0.1" }
 
 [build-dependencies]
 napi-build = "0.2"

@@ -1,5 +1,8 @@
 name: CI
 
+env:
+  DEBUG: 'napi:*'
+
 on:
   push:
     branches: [master, develop]
@@ -78,13 +81,20 @@ jobs:
         run: yarn install --frozen-lockfile --registry https://registry.npmjs.org
 
       - name: 'Build'
+        if: matrix.os != 'macos-latest'
         run: yarn build
+
+      - name: 'Build'
+        if: matrix.os == 'macos-latest'
+        run: yarn build
+        env:
+          MACOSX_DEPLOYMENT_TARGET: '10.13'
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: bindings-${{ env.PLATFORM_NAME }}
-          path: index.${{ env.PLATFORM_NAME }}.node
+          path: package-template.${{ env.PLATFORM_NAME }}.node
 
       - name: Clear the cargo caches
         run: |
@@ -170,7 +180,10 @@ jobs:
       - name: Download all artifacts
         uses: actions/download-artifact@v2
         with:
-          path: .
+          path: artifacts
+
+      - name: Move artifacts
+        run: yarn artifacts
 
       - name: List packages
         run: ls -R .
