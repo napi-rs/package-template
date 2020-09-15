@@ -35,7 +35,7 @@
     "version": "napi version"
   },
   "devDependencies": {
-    "@octokit/rest": "^18.0.5",
+    "@octokit/rest": "^18.0.6",
     "@swc-node/register": "^0.4.11",
     "@typescript-eslint/eslint-plugin": "^4.1.0",
     "@typescript-eslint/parser": "^4.1.0",
