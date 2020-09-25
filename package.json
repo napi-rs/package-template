@@ -10,7 +10,8 @@
   "os": ["darwin", "linux", "win32"],
   "cpu": ["x64"],
   "napi": {
-    "name": "package-template"
+    "name": "package-template",
+    "musl": ["linux"]
   },
   "engines": {
     "node": ">= 8.9"
@@ -35,7 +36,7 @@
     "version": "napi version"
   },
   "devDependencies": {
-    "@swc-node/register": "^0.4.11",
+    "@swc-node/register": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^4.2.0",
     "@typescript-eslint/parser": "^4.2.0",
     "ava": "^3.12.1",
@@ -65,7 +66,10 @@
   },
   "ava": {
     "require": ["@swc-node/register"],
-    "extensions": ["ts"]
+    "extensions": ["ts"],
+    "environmentVariables": {
+      "SWC_NODE_PROJECT": "./tsconfig.json"
+    }
   },
   "prettier": {
     "printWidth": 120,
