@@ -22,6 +22,7 @@
   },
   "scripts": {
     "artifacts": "napi artifacts",
+    "bench": "node -r @swc-node/register benchmark/bench.ts",
     "build": "cargo build --release && napi build --platform --release",
     "build:debug": "cargo build && napi build --platform",
     "format": "run-p format:md format:json format:yaml format:source format:rs",
@@ -40,6 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^4.3.0",
     "@typescript-eslint/parser": "^4.3.0",
     "ava": "^3.13.0",
+    "benny": "^3.6.14",
     "chalk": "^4.1.0",
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.12.0",
