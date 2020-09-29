@@ -23,7 +23,7 @@
   "scripts": {
     "artifacts": "napi artifacts",
     "build": "cargo build --release && napi build --platform --release",
-    "build:debug": "cargo build && napi --platform",
+    "build:debug": "cargo build && napi build --platform",
     "format": "run-p format:md format:json format:yaml format:source format:rs",
     "format:md": "prettier --parser markdown --write './**/*.md'",
     "format:json": "prettier --parser json --write './**/*.json'",

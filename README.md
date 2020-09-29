@@ -12,8 +12,6 @@ yarn add @napi-rs/package-template
 
 ## Support matrix
 
-> ⚠️ Linux musl has not been supported now.
-
 ### Operating Systems
 
 | Linux | macOS | Windows x64 MSVC |
