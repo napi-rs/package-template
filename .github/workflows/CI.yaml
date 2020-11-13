@@ -2,10 +2,12 @@ name: CI
 
 env:
   DEBUG: 'napi:*'
+  APP_NAME: 'package-template'
 
 on:
   push:
-    branches: [master, develop]
+    branches:
+      - main
     tags-ignore:
       - '**'
   pull_request:
@@ -19,32 +21,17 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
-    name: stable - ${{ matrix.os }} - node@12
+    name: stable - ${{ matrix.os }} - node@14
     runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2-beta
         with:
-          node-version: 12
-
-      - name: Set platform name
-        run: |
-          export NODE_PLATFORM_NAME=$(node -e "console.log(require('os').platform())")
-          echo "PLATFORM_NAME=${NODE_PLATFORM_NAME}" >> $GITHUB_ENV
-        shell: bash
-
-      - name: Install llvm
-        if: matrix.os == 'windows-latest'
-        run: choco install -y llvm
-
-      - name: Set llvm path
-        if: matrix.os == 'windows-latest'
-        run: |
-          echo "LIBCLANG_PATH=C:\\Program Files\\LLVM\\bin" >> $GITHUB_ENV
-        shell: bash
+          node-version: 14
+          check-latest: true
 
       - name: Install
         uses: actions-rs/toolchain@v1
@@ -62,23 +49,22 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.cargo/registry
-          key: stable-${{ matrix.os }}-node@12-cargo-registry-trimmed-${{ hashFiles('**/Cargo.lock') }}
+          key: stable-${{ matrix.os }}-node@14-cargo-registry-trimmed-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Cache cargo index
         uses: actions/cache@v1
         with:
           path: ~/.cargo/git
-          key: stable-${{ matrix.os }}gnu-node@12-cargo-index-trimmed-${{ hashFiles('**/Cargo.lock') }}
+          key: stable-${{ matrix.os }}-node@14-cargo-index-trimmed-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Cache NPM dependencies
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: npm-cache-${{ matrix.os }}-node@12-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            npm-cache-
+          key: npm-cache-${{ matrix.os }}-node@14-${{ hashFiles('yarn.lock') }}
+
       - name: 'Install dependencies'
-        run: yarn install --frozen-lockfile --registry https://registry.npmjs.org
+        run: yarn install --frozen-lockfile --registry https://registry.npmjs.org --network-timeout 300000
 
       - name: 'Build'
         if: matrix.os != 'macos-latest'
@@ -93,17 +79,17 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: bindings-${{ env.PLATFORM_NAME }}
-          path: package-template.${{ env.PLATFORM_NAME }}.node
+          name: bindings-${{ matrix.os }}
+          path: ${{ env.APP_NAME }}.*.node
 
       - name: Clear the cargo caches
         run: |
           cargo install cargo-cache --no-default-features --features ci-autoclean
           cargo-cache
 
-  build_musl:
+  build-linux-musl:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
-    name: stable - linux-musl - node@12
+    name: stable - linux-musl - node@10
     runs-on: ubuntu-latest
 
     steps:
@@ -121,19 +107,232 @@ jobs:
         run: |
           docker pull docker.pkg.github.com/napi-rs/napi-rs/rust-nodejs-alpine:lts
           docker tag docker.pkg.github.com/napi-rs/napi-rs/rust-nodejs-alpine:lts builder
+
+      - name: Generate Cargo.lock
+        uses: actions-rs/cargo@v1
+        with:
+          command: generate-lockfile
+
+      - name: Cache cargo registry
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/registry
+          key: stable-node-alpine-@10-cargo-registry-trimmed-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache cargo index
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/git
+          key: stable-node-alpine-@10-cargo-index-trimmed-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache NPM dependencies
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: npm-cache-alpine-node@10-${{ hashFiles('yarn.lock') }}
+
       - name: 'Install dependencies'
-        run: yarn install --frozen-lockfile --registry https://registry.npmjs.org
+        run: yarn install --frozen-lockfile --registry https://registry.npmjs.org --network-timeout 300000
 
       - name: 'Build'
         run: |
-          docker run --rm -v $(pwd)/.cargo:/root/.cargo -v $(pwd):/fast-escape -w /fast-escape builder sh -c "yarn build --musl"
+          docker run --rm -v ~/.cargo/git:/root/.cargo/git -v ~/.cargo/registry:/root/.cargo/registry -v $(pwd):/${{ env.APP_NAME }} -e DEBUG="napi:*" -w /${{ env.APP_NAME }} builder sh -c "yarn build"
+
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: bindings-linux-musl
-          path: package-template.linux-musl.node
+          path: ${{ env.APP_NAME }}.*.node
 
-  test_binding:
+  build-linux-aarch64:
+    name: stable - aarch64-unknown-linux-gnu - node@14
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+
+      - uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 14
+          check-latest: true
+
+      - name: Install
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+
+      - name: Install aarch64 toolchain
+        run: rustup target add aarch64-unknown-linux-gnu
+
+      - name: Generate Cargo.lock
+        uses: actions-rs/cargo@v1
+        with:
+          command: generate-lockfile
+
+      - name: Cache cargo registry
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/registry
+          key: stable-linux-aarch64-gnu-node@14-cargo-registry-trimmed-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache cargo index
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/git
+          key: stable-linux-aarch64-gnu-node@14-cargo-index-trimmed-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache NPM dependencies
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: npm-cache-linux-aarch64-gnu-node@14-${{ hashFiles('yarn.lock') }}
+
+      - name: Install cross compile toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu -y
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --registry https://registry.npmjs.org --network-timeout 300000
+
+      - name: Cross build aarch64
+        run: yarn build --target aarch64-unknown-linux-gnu
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: bindings-linux-aarch64
+          path: ${{ env.APP_NAME }}.*.node
+
+  build-win32-ia686:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install node x86
+        run: |
+          choco install nodejs-lts --x86 -y --force
+          refreshenv
+
+      - name: Set 32bit NodeJS path
+        run: |
+          echo "C:\\Program Files (x86)\\nodejs" >> $GITHUB_PATH
+        shell: bash
+
+      - name: Cache NPM dependencies
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: npm-cache-windows-i686-node@lts-${{ hashFiles('yarn.lock') }}
+
+      - name: 'Install dependencies'
+        run: yarn install --frozen-lockfile --registry https://registry.npmjs.org --network-timeout 300000
+
+      - name: Install
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+
+      - name: Install i686 toolchain
+        run: rustup target add i686-pc-windows-msvc
+
+      - name: Generate Cargo.lock
+        uses: actions-rs/cargo@v1
+        with:
+          command: generate-lockfile
+
+      - name: Cache cargo registry
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/registry
+          key: stable-windows-i686-node@lts-cargo-registry-trimmed-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache cargo index
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/git
+          key: stable-windows-i686-node@lts-cargo-index-trimmed-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cross build i686
+        run: yarn build --target i686-pc-windows-msvc
+
+      - name: Test binary
+        run: |
+          node -v
+          node simple-test.js
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: bindings-win32-i686
+          path: ${{ env.APP_NAME }}.*.node
+
+  build-apple-silicon:
+    name: nightly - aarch64-apple-darwin - node@14
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 14
+          check-latest: true
+
+      - name: Install
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          profile: minimal
+          override: true
+
+      - name: Install aarch64 toolchain
+        run: rustup target add aarch64-apple-darwin
+
+      - name: Generate Cargo.lock
+        uses: actions-rs/cargo@v1
+        with:
+          command: generate-lockfile
+
+      - name: Cache cargo registry
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/registry
+          key: nightly-apple-aarch64-node@14-cargo-registry-trimmed-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache cargo index
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/git
+          key: nightly-apple-aarch64-node@14-cargo-index-trimmed-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Cache NPM dependencies
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: npm-cache-apple-aarch64-node@14-${{ hashFiles('yarn.lock') }}
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile --registry https://registry.npmjs.org --network-timeout 300000
+
+      - name: Cross build aarch64
+        run: yarn build --target aarch64-apple-darwin
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: bindings-apple-aarch64
+          path: ${{ env.APP_NAME }}.*.node
+
+  test:
     name: Test bindings on ${{ matrix.os }} - node@${{ matrix.node }}
     needs:
       - build
@@ -141,31 +340,31 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node: ['10', '12', '14']
+        node: ['10', '12', '14', '15']
     runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2-beta
         with:
           node-version: ${{ matrix.node }}
+          check-latest: true
 
-      - name: Set platform name
-        run: |
-          export NODE_PLATFORM_NAME=$(node -e "console.log(require('os').platform())")
-          echo "PLATFORM_NAME=${NODE_PLATFORM_NAME}" >> $GITHUB_ENV
-        shell: bash
+      - name: Cache NPM dependencies
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: npm-cache-test-${{ matrix.os }}-node@${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
 
-      # Do not cache node_modules, or yarn workspace links broken
       - name: 'Install dependencies'
-        run: yarn install --frozen-lockfile --registry https://registry.npmjs.org
+        run: yarn install --frozen-lockfile --registry https://registry.npmjs.org --network-timeout 300000
 
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: bindings-${{ env.PLATFORM_NAME }}
+          name: bindings-${{ matrix.os }}
           path: .
 
       - name: List packages
@@ -175,18 +374,24 @@ jobs:
       - name: Test bindings
         run: yarn test
 
-  test_musl_binding:
+  test-musl:
     name: Test bindings on alpine - node@${{ matrix.node }}
     needs:
-      - build_musl
+      - build-linux-musl
     strategy:
       fail-fast: false
       matrix:
-        node: ['12', '14']
+        node: ['10', '12', '14', '15']
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Cache NPM dependencies
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: npm-cache-alpine-node@${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
 
       - name: 'Install dependencies'
         run: yarn install --frozen-lockfile --ignore-scripts --registry https://registry.npmjs.org
@@ -202,12 +407,67 @@ jobs:
         shell: bash
 
       - name: Run simple tests
-        run: docker run --rm -v $(pwd)/.cargo:/root/.cargo -v $(pwd):/fast-escape -w /fast-escape node:${{ matrix.node }}-alpine sh -c "node ./simple-test.js"
+        run: docker run --rm -v $(pwd):/${{ env.APP_NAME }} -w /${{ env.APP_NAME }} node:${{ matrix.node }}-alpine sh -c "node ./simple-test.js"
+
+  test-aarch64:
+    name: stable - aarch64-unknown-linux-gnu - node@${{ matrix.node }}
+    runs-on: ubuntu-latest
+
+    needs:
+      - build-linux-aarch64
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['10', '12', '14', '15']
+
+    steps:
+      - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+
+      - uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: true
+
+      - name: Cache NPM dependencies
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: npm-cache-test-${{ matrix.os }}-node@${{ matrix.node }}-${{ hashFiles('yarn.lock') }}
+
+      - name: 'Install dependencies'
+        run: yarn install --frozen-lockfile --registry https://registry.npmjs.org --network-timeout 300000
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: bindings-linux-aarch64
+          path: .
+
+      - name: List
+        run: ls -a
+
+      - name: Run tests
+        uses: docker://multiarch/ubuntu-core:arm64-focal
+        with:
+          args: >
+            sh -c "
+              apt-get update && \
+              apt-get install -y ca-certificates gnupg2 curl && \
+              curl -sL https://deb.nodesource.com/setup_${{ matrix.node }}.x | bash - && \
+              apt-get install -y nodejs && \
+              node ./simple-test.js
+            "
 
   dependabot:
     needs:
-      - test_binding
-      - test_musl_binding
+      - test
+      - test-musl
+      - test-aarch64
+      - build-win32-ia686
+      - build-apple-silicon
     runs-on: ubuntu-latest
     steps:
       - name: auto-merge
@@ -220,26 +480,29 @@ jobs:
     name: Publish
     runs-on: ubuntu-latest
     needs:
-      - test_binding
-      - test_musl_binding
+      - test
+      - test-musl
+      - test-aarch64
+      - build-win32-ia686
+      - build-apple-silicon
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2-beta
         with:
-          node-version: 12
+          node-version: 14
+          check-latest: true
 
       - name: Cache NPM dependencies
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: npm-cache-ubuntu-latest-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            npm-cache-
+          key: npm-cache-publish-ubuntu-latest-${{ hashFiles('yarn.lock') }}
+
       - name: 'Install dependencies'
-        run: yarn install --frozen-lockfile --registry https://registry.npmjs.org
+        run: yarn install --frozen-lockfile --registry https://registry.npmjs.org --network-timeout 300000
 
       - name: Download all artifacts
         uses: actions/download-artifact@v2
@@ -250,7 +513,7 @@ jobs:
         run: yarn artifacts
 
       - name: List packages
-        run: ls -R .
+        run: ls -R npm
         shell: bash
 
       - name: Publish
