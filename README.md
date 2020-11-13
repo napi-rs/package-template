@@ -14,15 +14,15 @@ yarn add @napi-rs/package-template
 
 ### Operating Systems
 
-| Linux | macOS | Windows x64 MSVC |
-| ----- | ----- | ---------------- |
-| ✓     | ✓     | ✓                |
+| Linux x64/aarch64 | macOS | Windows i686/x64 |
+| ----------------- | ----- | ---------------- |
+| ✓                 | ✓     | ✓                |
 
 ### NodeJS
 
-| Node10 | Node 12 | Node14 |
-| ------ | ------- | ------ |
-| ✓      | ✓       | ✓      |
+| Node10 | Node 12 | Node14 | Node15 |
+| ------ | ------- | ------ | ------ |
+| ✓      | ✓       | ✓      | ✓      |
 
 ## Ability
 
@@ -53,7 +53,7 @@ In this package we choose a better way to solve this problem. We release differe
 ## Develop requirements
 
 - Install latest `Rust`
-- Install `NodeJS@8.9+` which supported `N-API`
+- Install `NodeJS@10+` which fully supported `N-API`
 - Install `yarn@1.x`
 
 ## Test in local

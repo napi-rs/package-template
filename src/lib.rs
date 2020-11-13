@@ -11,7 +11,7 @@ use napi::{CallContext, Env, JsNumber, JsObject, Module, Result, Task};
 #[global_allocator]
 static ALLOC: jemallocator::Jemalloc = jemallocator::Jemalloc;
 
-#[cfg(windows)]
+#[cfg(all(windows, target_arch = "x86_64"))]
 #[global_allocator]
 static ALLOC: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
@@ -30,7 +30,7 @@ impl Task for AsyncTask {
     Ok(self.0 * 2)
   }
 
-  fn resolve(&self, env: &mut Env, output: Self::Output) -> Result<Self::JsValue> {
+  fn resolve(self, env: Env, output: Self::Output) -> Result<Self::JsValue> {
     env.create_uint32(output)
   }
 }
@@ -53,5 +53,6 @@ fn sync_fn(ctx: CallContext) -> Result<JsNumber> {
 fn sleep(ctx: CallContext) -> Result<JsObject> {
   let argument: u32 = ctx.get::<JsNumber>(0)?.try_into()?;
   let task = AsyncTask(argument);
-  ctx.env.spawn(task)
+  let async_task = ctx.env.spawn(task)?;
+  Ok(async_task.promise_object())
 }
