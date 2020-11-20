@@ -186,8 +186,10 @@ jobs:
           name: bindings-linux-aarch64
           path: ${{ env.APP_NAME }}.*.node
 
-  build-win32-ia686:
+  build-win32-i686:
     runs-on: windows-latest
+    env:
+      CARGO_PROFILE_RELEASE_OPT_LEVEL: 0
     steps:
       - uses: actions/checkout@v2
 
@@ -243,9 +245,7 @@ jobs:
         run: yarn build --target i686-pc-windows-msvc
 
       - name: Test binary
-        run: |
-          node -v
-          node simple-test.js
+        run: yarn test
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
@@ -385,7 +385,7 @@ jobs:
       - test
       - test-musl
       - test-aarch64
-      - build-win32-ia686
+      - build-win32-i686
     runs-on: ubuntu-latest
     steps:
       - name: auto-merge
@@ -401,7 +401,7 @@ jobs:
       - test
       - test-musl
       - test-aarch64
-      - build-win32-ia686
+      - build-win32-i686
 
     steps:
       - uses: actions/checkout@v2

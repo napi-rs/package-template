@@ -10,8 +10,8 @@ version = "0.1.0"
 crate-type = ["cdylib"]
 
 [dependencies]
-napi = {git = "https://github.com/napi-rs/napi-rs", branch = "rust-codegen-win32"}
-napi-derive = {git = "https://github.com/napi-rs/napi-rs", branch = "rust-codegen-win32"}
+napi = {git = "https://github.com/napi-rs/napi-rs"}
+napi-derive = {git = "https://github.com/napi-rs/napi-rs"}
 
 [target.'cfg(all(unix, not(target_env = "musl")))'.dependencies]
 jemallocator = {version = "0.3", features = ["disable_initial_exec_tls"]}
@@ -20,7 +20,7 @@ jemallocator = {version = "0.3", features = ["disable_initial_exec_tls"]}
 mimalloc = {version = "0.1"}
 
 [build-dependencies]
-napi-build = {git = "https://github.com/napi-rs/napi-rs", branch = "rust-codegen-win32"}
+napi-build = {git = "https://github.com/napi-rs/napi-rs"}
 
 [profile.release]
-opt-level = 's'
+lto = true
