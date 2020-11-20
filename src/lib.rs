@@ -1,21 +1,17 @@
 #[macro_use]
-extern crate napi;
-#[macro_use]
 extern crate napi_derive;
 
 use std::convert::TryInto;
 
-use napi::{CallContext, Env, JsNumber, JsObject, Module, Result, Task};
+use napi::{CallContext, Env, JsNumber, JsObject, Result, Task};
 
 #[cfg(all(unix, not(target_env = "musl")))]
 #[global_allocator]
 static ALLOC: jemallocator::Jemalloc = jemallocator::Jemalloc;
 
-#[cfg(all(windows, target_arch = "x86_64"))]
+#[cfg(windows)]
 #[global_allocator]
 static ALLOC: mimalloc::MiMalloc = mimalloc::MiMalloc;
-
-register_module!(example, init);
 
 struct AsyncTask(u32);
 
@@ -35,10 +31,11 @@ impl Task for AsyncTask {
   }
 }
 
-fn init(module: &mut Module) -> Result<()> {
-  module.create_named_method("sync", sync_fn)?;
+#[module_exports]
+fn init(mut exports: JsObject) -> Result<()> {
+  exports.create_named_method("sync", sync_fn)?;
 
-  module.create_named_method("sleep", sleep)?;
+  exports.create_named_method("sleep", sleep)?;
   Ok(())
 }
 

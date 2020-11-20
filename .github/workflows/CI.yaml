@@ -188,9 +188,6 @@ jobs:
 
   build-win32-ia686:
     runs-on: windows-latest
-    env:
-      CARGO_PROFILE_napi_OPT_LEVEL: 0
-      CARGO_PROFILE_napi_OPT_LTO: false
     steps:
       - uses: actions/checkout@v2
 
