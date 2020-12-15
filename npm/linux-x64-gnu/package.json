@@ -1,6 +1,6 @@
 {
   "name": "@napi-rs/package-template-linux-x64-gnu",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "os": ["linux"],
   "cpu": ["x64"],
   "main": "package-template.linux-x64-gnu.node",
