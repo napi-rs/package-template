@@ -1,6 +1,6 @@
 {
   "name": "@napi-rs/package-template-linux-x64-musl",
-  "version": "0.0.8",
+  "version": "1.0.0-alpha.0",
   "os": ["linux"],
   "cpu": ["x64"],
   "main": "package-template.linux-x64-musl.node",
