@@ -209,7 +209,7 @@ jobs:
           name: bindings-linux-aarch64
           path: ${{ env.APP_NAME }}.*.node
 
-  build-win32-ia686:
+  build-win32-i686:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
@@ -241,7 +241,7 @@ jobs:
           override: true
 
       - name: Install i686 toolchain
-        run: rustup target add i686-pc-windows-msvc
+        run: rustup target add i586-pc-windows-msvc
 
       - name: Generate Cargo.lock
         uses: actions-rs/cargo@v1
@@ -261,17 +261,21 @@ jobs:
           key: stable-windows-i686-node@lts-cargo-index-trimmed-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Cross build i686
-        run: yarn build --target i686-pc-windows-msvc
+        shell: bash
+        run: |
+          yarn build --target i586-pc-windows-msvc
+          mv package-template.win32-i586-msvc.node package-template.win32-ia32-msvc.node
 
       - name: Test binary
         run: |
           node -v
           node simple-test.js
+          yarn test
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: bindings-win32-i686
+          name: bindings-win32-i586
           path: ${{ env.APP_NAME }}.*.node
 
   build-apple-silicon:
@@ -466,7 +470,7 @@ jobs:
       - test
       - test-musl
       - test-aarch64
-      - build-win32-ia686
+      - build-win32-i686
       - build-apple-silicon
     runs-on: ubuntu-latest
     steps:
@@ -483,7 +487,7 @@ jobs:
       - test
       - test-musl
       - test-aarch64
-      - build-win32-ia686
+      - build-win32-i686
       - build-apple-silicon
 
     steps:
