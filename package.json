@@ -44,9 +44,9 @@
     "version": "napi version"
   },
   "devDependencies": {
-    "@napi-rs/cli": "^1.0.0-alpha.10",
-    "@typescript-eslint/eslint-plugin": "^4.10.0",
-    "@typescript-eslint/parser": "^4.10.0",
+    "@napi-rs/cli": "^1.0.0-alpha.13",
+    "@typescript-eslint/eslint-plugin": "^4.11.0",
+    "@typescript-eslint/parser": "^4.11.0",
     "ava": "^3.14.0",
     "benny": "^3.6.15",
     "chalk": "^4.1.0",
