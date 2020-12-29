@@ -1,6 +1,6 @@
 {
   "name": "@napi-rs/package-template-win32-x64-msvc",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0",
   "os": ["win32"],
   "cpu": ["x64"],
   "main": "package-template.win32-x64-msvc.node",

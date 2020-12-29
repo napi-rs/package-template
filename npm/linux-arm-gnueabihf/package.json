@@ -1,6 +1,6 @@
 {
   "name": "@napi-rs/package-template-linux-arm-gnueabihf",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0",
   "os": ["linux"],
   "cpu": ["arm"],
   "main": "package-template.linux-arm-gnueabihf.node",
