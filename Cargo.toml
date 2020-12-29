@@ -10,8 +10,8 @@ version = "0.1.0"
 crate-type = ["cdylib"]
 
 [dependencies]
-napi = "1.0.0-alpha.1"
-napi-derive = "1.0.0-alpha.0"
+napi = "1.0.0"
+napi-derive = "1.0.0"
 
 [target.'cfg(all(unix, not(target_env = "musl"), not(target_arch = "aarch64")))'.dependencies]
 jemallocator = {version = "0.3", features = ["disable_initial_exec_tls"]}
@@ -20,7 +20,7 @@ jemallocator = {version = "0.3", features = ["disable_initial_exec_tls"]}
 mimalloc = {version = "0.1"}
 
 [build-dependencies]
-napi-build = "1.0.0-alpha.0"
+napi-build = "1.0.0"
 
 [profile.release]
 codegen-units = 1
