@@ -7,7 +7,13 @@ use std::convert::TryInto;
 
 use napi::{CallContext, Env, JsNumber, JsObject, Result, Task};
 
-#[cfg(all(unix, not(target_env = "musl"), not(target_arch = "aarch64")))]
+#[cfg(all(
+  unix,
+  not(target_env = "musl"),
+  not(target_arch = "aarch64"),
+  not(target_arch = "arm"),
+  not(debug_assertions)
+))]
 #[global_allocator]
 static ALLOC: jemallocator::Jemalloc = jemallocator::Jemalloc;
 
