@@ -152,7 +152,7 @@ jobs:
             target: 'x86_64-apple-darwin'
           - host: windows-latest
             target: 'x86_64-pc-windows-msvc'
-        node: ['10', '12', '14', '15']
+        node: ['12', '14', '16']
     runs-on: ${{ matrix.settings.host }}
 
     steps:
@@ -193,7 +193,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: ['10', '12', '14', '15']
+        node: ['12', '14', '16']
     runs-on: ubuntu-20.04
 
     steps:
@@ -234,7 +234,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: ['10', '12', '14', '15']
+        node: ['12', '14', '16']
     runs-on: ubuntu-20.04
 
     steps:
@@ -275,7 +275,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: ['10', '12', '14', '15']
+        node: ['12', '14', '16']
     runs-on: ubuntu-20.04
 
     steps:
@@ -326,7 +326,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: ['10', '12', '14', '15']
+        node: ['12', '14', '16']
     runs-on: ubuntu-20.04
 
     steps:
