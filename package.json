@@ -33,7 +33,7 @@
   },
   "scripts": {
     "artifacts": "napi artifacts",
-    "bench": "node -r ts-node/register/transpile-only benchmark/bench.ts",
+    "bench": "node -r @swc-node/register benchmark/bench.ts",
     "build": "napi build --platform --release",
     "build:debug": "napi build --platform",
     "format": "run-p format:md format:json format:yaml format:source format:rs",
