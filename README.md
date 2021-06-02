@@ -14,21 +14,26 @@ yarn add @napi-rs/package-template
 
 ### Operating Systems
 
-| Linux x64/aarch64 | macOS x64/aarch64 | Windows x64 |
-| ----------------- | ----------------- | ----------- |
-| ✓                 | ✓                 | ✓           |
-
-### NodeJS
-
-| Node10 | Node 12 | Node14 | Node15 |
-| ------ | ------- | ------ | ------ |
-| ✓      | ✓       | ✓      | ✓      |
+|                  | node12 | node14 | node16 |
+| ---------------- | ------ | ------ | ------ |
+| Windows x64      | ✓      | ✓      | ✓      |
+| Windows x32      | ✓      | ✓      | ✓      |
+| Windows arm64    | ✓      | ✓      | ✓      |
+| macOS x64        | ✓      | ✓      | ✓      |
+| macOS arm64      | ✓      | ✓      | ✓      |
+| Linux x64 gnu    | ✓      | ✓      | ✓      |
+| Linux x64 musl   | ✓      | ✓      | ✓      |
+| Linux arm gnu    | ✓      | ✓      | ✓      |
+| Linux arm64 gnu  | ✓      | ✓      | ✓      |
+| Linux arm64 musl | ✓      | ✓      | ✓      |
+| Android arm64    | ✓      | ✓      | ✓      |
+| FreeBSD x64      | ✓      | ✓      | ✓      |
 
 ## Ability
 
 ### Build
 
-After `yarn build/npm run build` command, you can see `index.[darwin|win32|linux].node` file in project root. This is the native addon built from [lib.rs](./src/lib.rs).
+After `yarn build/npm run build` command, you can see `package-template.[darwin|win32|linux].node` file in project root. This is the native addon built from [lib.rs](./src/lib.rs).
 
 ### Test
 
@@ -36,11 +41,11 @@ With [ava](https://github.com/avajs/ava), run `yarn test/npm run test` to testin
 
 ### CI
 
-With github actions, every commits and pull request will be built and tested automatically in [`node@10`, `node@12`, `@node14`] x [`macOS`, `Linux`, `Windows`] matrix. You will never be afraid of the native addon broken in these platforms.
+With github actions, every commits and pull request will be built and tested automatically in [`node@12`, `node@14`, `@node16`] x [`macOS`, `Linux`, `Windows`] matrix. You will never be afraid of the native addon broken in these platforms.
 
 ### Release
 
-Release native package is very difficult in old days. Native packages may ask developers who use its to install `build toolchains` like `gcc/llvm` , `node-gyp` or something more.
+Release native package is very difficult in old days. Native packages may ask developers who use its to install `build toolchain` like `gcc/llvm` , `node-gyp` or something more.
 
 With `Github actions`, we can easily prebuild `binary` for major platforms. And with `N-API`, we should never afraid of **ABI Compatible**.
 
@@ -53,7 +58,7 @@ In this package we choose a better way to solve this problem. We release differe
 ## Develop requirements
 
 - Install latest `Rust`
-- Install `NodeJS@10+` which fully supported `N-API`
+- Install `Node.js@10+` which fully supported `Node-API`
 - Install `yarn@1.x`
 
 ## Test in local
