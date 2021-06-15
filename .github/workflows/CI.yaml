@@ -281,7 +281,7 @@ jobs:
         shell: bash
 
       - name: Test bindings
-        run: docker run --rm -v $(pwd):/canvas -w /canvas node:${{ matrix.node }}-slim yarn test
+        run: docker run --rm -v $(pwd):/${{ env.APP_NAME }} -w /${{ env.APP_NAME }} node:${{ matrix.node }}-slim yarn test
 
   test-linux-x64-musl-binding:
     name: Test bindings on x86_64-unknown-linux-musl - node@${{ matrix.node }}
@@ -322,7 +322,7 @@ jobs:
         shell: bash
 
       - name: Test bindings
-        run: docker run --rm -v $(pwd):/canvas -w /canvas node:${{ matrix.node }}-alpine yarn test
+        run: docker run --rm -v $(pwd):/${{ env.APP_NAME }} -w /${{ env.APP_NAME }} node:${{ matrix.node }}-alpine yarn test
 
   test-linux-aarch64-gnu-binding:
     name: Test bindings on aarch64-unknown-linux-gnu - node@${{ matrix.node }}
@@ -357,8 +357,8 @@ jobs:
           distro: ubuntu20.04
 
           dockerRunArgs: |
-            --volume "${PWD}:/canvas"
-            -w /canvas
+            --volume "${PWD}:/${{ env.APP_NAME }}"
+            -w /${{ env.APP_NAME }}
 
           # Not required, but speeds up builds by storing container images in
           # a GitHub package registry.
@@ -408,8 +408,8 @@ jobs:
           distro: ubuntu20.04
 
           dockerRunArgs: |
-            --volume "${PWD}:/canvas"
-            -w /canvas
+            --volume "${PWD}:/${{ env.APP_NAME }}"
+            -w /${{ env.APP_NAME }}
 
           # Not required, but speeds up builds by storing container images in
           # a GitHub package registry.
