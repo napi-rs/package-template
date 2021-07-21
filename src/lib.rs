@@ -8,16 +8,11 @@ use std::convert::TryInto;
 use napi::{CallContext, Env, JsNumber, JsObject, Result, Task};
 
 #[cfg(all(
-  unix,
+  any(windows, unix),
+  target_arch = "x86_64",
   not(target_env = "musl"),
-  not(target_arch = "aarch64"),
-  not(target_arch = "arm"),
   not(debug_assertions)
 ))]
-#[global_allocator]
-static ALLOC: jemallocator::Jemalloc = jemallocator::Jemalloc;
-
-#[cfg(all(windows, target_arch = "x86_64"))]
 #[global_allocator]
 static ALLOC: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
