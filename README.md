@@ -41,15 +41,15 @@ With [ava](https://github.com/avajs/ava), run `yarn test/npm run test` to testin
 
 ### CI
 
-With github actions, every commits and pull request will be built and tested automatically in [`node@12`, `node@14`, `@node16`] x [`macOS`, `Linux`, `Windows`] matrix. You will never be afraid of the native addon broken in these platforms.
+With GitHub actions, every commits and pull request will be built and tested automatically in [`node@12`, `node@14`, `@node16`] x [`macOS`, `Linux`, `Windows`] matrix. You will never be afraid of the native addon broken in these platforms.
 
 ### Release
 
 Release native package is very difficult in old days. Native packages may ask developers who use its to install `build toolchain` like `gcc/llvm` , `node-gyp` or something more.
 
-With `Github actions`, we can easily prebuild `binary` for major platforms. And with `N-API`, we should never afraid of **ABI Compatible**.
+With `GitHub actions`, we can easily prebuild `binary` for major platforms. And with `N-API`, we should never afraid of **ABI Compatible**.
 
-The other problem is how to deliver prebuild `binary` to users. Download it in `postinstall` script is a common way which most packages do it right now. The problem of this solution is it introduced many other packages to download binary which has not been used by `runtime codes`. The other problem is some user may not easily download the binary from `github/CDN` if they are behind private network (But in most case, they have a private NPM mirror).
+The other problem is how to deliver prebuild `binary` to users. Download it in `postinstall` script is a common way which most packages do it right now. The problem of this solution is it introduced many other packages to download binary which has not been used by `runtime codes`. The other problem is some user may not easily download the binary from `GitHub/CDN` if they are behind private network (But in most case, they have a private NPM mirror).
 
 In this package we choose a better way to solve this problem. We release different `npm packages` for different platform. And add it to `optionalDependencies` before release the `Major` package to npm.
 
