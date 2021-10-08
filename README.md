@@ -82,7 +82,7 @@ $ ava --verbose
 
 ## Release package
 
-Ensure you have set you **NPM_TOKEN** in `Github` project setting.
+Ensure you have set you **NPM_TOKEN** in `GitHub` project setting.
 
 In `Settings -> Secrets`, add **NPM_TOKEN** into it.
 
@@ -94,4 +94,4 @@ yarn version [xxx]
 git push --follow-tags
 ```
 
-Github actions will do the rest job for you.
+GitHub actions will do the rest job for you.
