@@ -89,9 +89,9 @@ In `Settings -> Secrets`, add **NPM_TOKEN** into it.
 When you want release package:
 
 ```
-yarn version [xxx]
+npm version [<newversion> | major | minor | patch | premajor | preminor | prepatch | prerelease [--preid=<prerelease-id>] | from-git]
 
-git push --follow-tags
+git push
 ```
 
 GitHub actions will do the rest job for you.
