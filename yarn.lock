@@ -93,10 +93,10 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@napi-rs/cli@^2.0.0-beta.4":
-  version "2.0.0-beta.4"
-  resolved "https://registry.npmjs.org/@napi-rs/cli/-/cli-2.0.0-beta.4.tgz#843a0ceee88e76574310e381a69ce59b0ab3f9b3"
-  integrity sha512-Fg1NCixc35xoSw3Svo2Ed9U/BIofd7qOj+tX/fGy1LwLRMIoz1iC1ESN2lpSTB4PePqcz+3kgaTASbBi91qZIA==
+"@napi-rs/cli@^2.0.0-beta.5":
+  version "2.0.0-beta.5"
+  resolved "https://registry.npmjs.org/@napi-rs/cli/-/cli-2.0.0-beta.5.tgz#0bc92c3a5d865f667f294d14a967bdb487987d14"
+  integrity sha512-/t7T52f2PEOcQXXbnmUZKKwAGIIU8mj2a1gwWR6Vo8wJeAzKXFrfQ5wx1Y/56E1vYRcRrGyDatDTBEQc7omwdw==
 
 "@napi-rs/triples@^1.0.3":
   version "1.1.0"
