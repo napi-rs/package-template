@@ -1,6 +1,6 @@
 import b from 'benny'
 
-import { sync } from '../index'
+import { plus100 } from '../index'
 
 function add(a: number) {
   return a + 100
@@ -11,7 +11,7 @@ async function run() {
     'Add 100',
 
     b.add('Native a + 100', () => {
-      sync(10)
+      plus100(10)
     }),
 
     b.add('JavaScript a + 100', () => {

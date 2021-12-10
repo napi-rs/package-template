@@ -1,3 +1,9 @@
-export const sync: (input: number) => number
-// sleep [duration] ms, return Promise which resolved 2 * duration
-export const sleep: (duration: number) => Promise<number>
+/* eslint-disable */
+
+export class ExternalObject<T> {
+  readonly '': {
+    readonly '': unique symbol
+    [K: symbol]: T
+  }
+}
+export function plus100(input: number): number
