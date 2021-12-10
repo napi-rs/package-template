@@ -1,15 +1,15 @@
 {
-  "name": "@napi-rs/package-template-android-arm64",
+  "name": "@napi-rs/package-template-android-arm-eabi",
   "version": "1.0.0",
   "os": [
     "android"
   ],
   "cpu": [
-    "arm64"
+    "arm"
   ],
-  "main": "package-template.android-arm64.node",
+  "main": "package-template.android-arm-eabi.node",
   "files": [
-    "package-template.android-arm64.node"
+    "package-template.android-arm-eabi.node"
   ],
   "description": "Template project for writing node package with napi-rs",
   "keywords": [

@@ -5,6 +5,7 @@ parserOptions:
     jsx: true
   ecmaVersion: latest
   sourceType: module
+  project: ./tsconfig.json
 
 env:
   browser: true
@@ -14,11 +15,10 @@ env:
 
 plugins:
   - import
-  - sonarjs
+  - '@typescript-eslint'
 
 extends:
   - eslint:recommended
-  - plugin:sonarjs/recommended
   - plugin:prettier/recommended
 
 rules:
@@ -60,30 +60,15 @@ rules:
       },
     ]
 
-  'sonarjs/cognitive-complexity': 0
-  'sonarjs/no-duplicate-string': 0
-  'sonarjs/no-big-function': 0
-  'sonarjs/no-identical-functions': 0
-  'sonarjs/no-small-switch': 0
-
 overrides:
   - files:
-      - ./**/*.{ts,tsx}
+      - ./**/*{.ts,.tsx}
     rules:
       'no-unused-vars': [2, { varsIgnorePattern: '^_', argsIgnorePattern: '^_', ignoreRestSiblings: true }]
-
-  - files:
-      - ./**/*{.ts,.tsx}
-    plugins:
-      - '@typescript-eslint'
-    parserOptions:
-      project: ./tsconfig.json
-    rules:
       'no-undef': 0
       # TypeScript declare merge
       'no-redeclare': 0
       'no-useless-constructor': 0
-      'no-unused-vars': 0
       'no-dupe-class-members': 0
       'no-case-declarations': 0
       'no-duplicate-imports': 0
