@@ -1,5 +1,5 @@
-const { sync } = require('./index')
+const { plus100 } = require('./index')
 
-console.assert(sync(0) === 100, 'Simple test failed')
+console.assert(plus100(0) === 100, 'Simple test failed')
 
 console.info('Simple test passed')
