@@ -4,6 +4,13 @@
 
 > Template project for writing node package with napi-rs.
 
+# Usage
+
+1. Click __Use this template__.
+2. __Clone__ your project.
+3. Run `yarn install` to install dependencies.
+4. Run `npx napi rename [name]` command under the project folder to rename your package.
+
 ## Install this test package
 
 ```
