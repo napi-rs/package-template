@@ -13,9 +13,6 @@ crate-type = ["cdylib"]
 napi = "2"
 napi-derive = "2"
 
-[target.'cfg(all(any(windows, unix), target_arch = "x86_64", not(target_env = "musl")))'.dependencies]
-mimalloc = {version = "0.1"}
-
 [build-dependencies]
 napi-build = "1"
 

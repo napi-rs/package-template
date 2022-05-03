@@ -7,6 +7,9 @@
   "cpu": [
     "arm64"
   ],
+  "libc": [
+    "glibc"
+  ],
   "main": "package-template.linux-arm64-gnu.node",
   "files": [
     "package-template.linux-arm64-gnu.node"
