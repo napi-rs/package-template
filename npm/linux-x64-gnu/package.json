@@ -7,6 +7,9 @@
   "cpu": [
     "x64"
   ],
+  "libc": [
+    "glibc"
+  ],
   "main": "package-template.linux-x64-gnu.node",
   "files": [
     "package-template.linux-x64-gnu.node"

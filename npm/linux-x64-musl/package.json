@@ -7,6 +7,9 @@
   "cpu": [
     "x64"
   ],
+  "libc": [
+    "musl"
+  ],
   "main": "package-template.linux-x64-musl.node",
   "files": [
     "package-template.linux-x64-musl.node"
