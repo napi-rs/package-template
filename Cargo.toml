@@ -14,7 +14,7 @@ napi = "2"
 napi-derive = "2"
 
 [build-dependencies]
-napi-build = "1"
+napi-build = "2"
 
 [profile.release]
 lto = true
