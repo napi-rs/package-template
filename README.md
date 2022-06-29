@@ -9,7 +9,7 @@
 1. Click **Use this template**.
 2. **Clone** your project.
 3. Run `yarn install` to install dependencies.
-4. Run `npx napi rename [name]` command under the project folder to rename your package.
+4. Run `npx napi rename -n [name]` command under the project folder to rename your package.
 
 ## Install this test package
 
@@ -21,7 +21,7 @@ yarn add @napi-rs/package-template
 
 ### Operating Systems
 
-|                  | node12 | node14 | node16 |
+|                  | node14 | node16 | node18 |
 | ---------------- | ------ | ------ | ------ |
 | Windows x64      | ✓      | ✓      | ✓      |
 | Windows x32      | ✓      | ✓      | ✓      |
@@ -49,7 +49,7 @@ With [ava](https://github.com/avajs/ava), run `yarn test/npm run test` to testin
 
 ### CI
 
-With GitHub actions, every commits and pull request will be built and tested automatically in [`node@12`, `node@14`, `@node16`] x [`macOS`, `Linux`, `Windows`] matrix. You will never be afraid of the native addon broken in these platforms.
+With GitHub actions, every commits and pull request will be built and tested automatically in [`node@14`, `node@16`, `@node18`] x [`macOS`, `Linux`, `Windows`] matrix. You will never be afraid of the native addon broken in these platforms.
 
 ### Release
 
