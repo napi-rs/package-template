@@ -13,4 +13,6 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - run: ls -R "${ANDROID_NDK_LATEST_HOME}"
+      - run: |
+          ls /usr/local/lib/android/sdk/ndk
+          ls -R "${ANDROID_NDK_LATEST_HOME}"
