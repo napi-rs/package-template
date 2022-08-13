@@ -1,5 +1,7 @@
-const { plus100 } = require('./index')
+import lib from "./index.js";
 
-console.assert(plus100(0) === 100, 'Simple test failed')
+const { plus100 } = lib;
 
-console.info('Simple test passed')
+console.assert(plus100(0) === 100, "Simple test failed");
+
+console.info("Simple test passed");
