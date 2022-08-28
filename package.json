@@ -56,14 +56,14 @@
     "version": "napi version"
   },
   "devDependencies": {
-    "@napi-rs/cli": "^2.10.3",
+    "@napi-rs/cli": "^2.11.4",
     "@swc-node/register": "^1.5.1",
-    "@typescript-eslint/eslint-plugin": "^5.31.0",
-    "@typescript-eslint/parser": "^5.31.0",
-    "ava": "^4.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.35.1",
+    "@typescript-eslint/parser": "^5.35.1",
+    "ava": "^4.3.3",
     "benny": "^3.7.1",
     "chalk": "^5.0.1",
-    "eslint": "^8.20.0",
+    "eslint": "^8.23.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -71,7 +71,7 @@
     "lint-staged": "^13.0.3",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",
-    "typescript": "^4.7.4"
+    "typescript": "^4.8.2"
   },
   "lint-staged": {
     "*.@(js|ts|tsx)": [
@@ -88,6 +88,8 @@
     "extensions": [
       "ts"
     ],
+    "timeout": "2m",
+    "workerThreads": false,
     "environmentVariables": {
       "TS_NODE_PROJECT": "./tsconfig.json"
     }
@@ -99,5 +101,5 @@
     "singleQuote": true,
     "arrowParens": "always"
   },
-  "packageManager": "yarn@3.2.2"
+  "packageManager": "yarn@3.2.3"
 }
