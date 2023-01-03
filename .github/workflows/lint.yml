@@ -23,12 +23,9 @@ jobs:
           check-latest: true
 
       - name: Install
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
-          profile: minimal
-          override: true
-          components: rustfmt, clippy
+          components: clippy, rustfmt
 
       - name: Cache NPM dependencies
         uses: actions/cache@v3
