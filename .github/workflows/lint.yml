@@ -36,8 +36,8 @@ jobs:
           path: node_modules
           key: npm-cache-lint-node@16
 
-      - name: 'Install dependencies'
-        run: yarn install --frozen-lockfile --registry https://registry.npmjs.org --network-timeout 300000
+      - name: Install dependencies
+        run: yarn install --immutable --network-timeout 300000
 
       - name: ESLint
         run: yarn lint
