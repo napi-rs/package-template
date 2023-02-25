@@ -114,6 +114,7 @@ __metadata:
     "@napi-rs/cli": ^2.14.6
     "@swc-node/register": ^1.5.5
     "@swc/core": ^1.3.32
+    "@taplo/cli": ^0.5.2
     "@typescript-eslint/eslint-plugin": ^5.50.0
     "@typescript-eslint/parser": ^5.50.0
     ava: ^5.1.1
@@ -320,6 +321,15 @@ __metadata:
     "@swc/core-win32-x64-msvc":
       optional: true
   checksum: 61d3eeee89b2dec8d128f63051cb8808b74aea42afc444a0e6477a763b145b5a7c511eab14f5ab0a6e2fa486a99316b0428cb5e02cb11dd65003b760caf85c6e
+  languageName: node
+  linkType: hard
+
+"@taplo/cli@npm:^0.5.2":
+  version: 0.5.2
+  resolution: "@taplo/cli@npm:0.5.2"
+  bin:
+    taplo: dist/cli.js
+  checksum: c2e0e584172bfee1cca6624bdb4470259179e232472fc7f4bbbd2e0127233039b9ace21a8d6b8d5081b157d9f046dc942ab27a634e23924b8c8a6096f1d04e27
   languageName: node
   linkType: hard
 
