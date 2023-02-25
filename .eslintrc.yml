@@ -13,6 +13,8 @@ env:
   node: true
   jest: true
 
+ignorePatterns: ['index.js']
+
 plugins:
   - import
   - '@typescript-eslint'
