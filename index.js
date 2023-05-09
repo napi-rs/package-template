@@ -3,10 +3,6 @@ const { join } = require('path')
 
 const { platform, arch } = process
 
-let nativeBinding = null
-let localFileExisted = false
-let loadError = null
-
 function isMusl() {
   // For Node 10
   if (!process.report || typeof process.report.getReport !== 'function') {
@@ -21,195 +17,67 @@ function isMusl() {
   }
 }
 
-switch (platform) {
-  case 'android':
-    switch (arch) {
-      case 'arm64':
-        localFileExisted = existsSync(join(__dirname, 'package-template.android-arm64.node'))
-        try {
-          if (localFileExisted) {
-            nativeBinding = require('./package-template.android-arm64.node')
-          } else {
-            nativeBinding = require('@napi-rs/package-template-android-arm64')
-          }
-        } catch (e) {
-          loadError = e
-        }
-        break
-      case 'arm':
-        localFileExisted = existsSync(join(__dirname, 'package-template.android-arm-eabi.node'))
-        try {
-          if (localFileExisted) {
-            nativeBinding = require('./package-template.android-arm-eabi.node')
-          } else {
-            nativeBinding = require('@napi-rs/package-template-android-arm-eabi')
-          }
-        } catch (e) {
-          loadError = e
-        }
-        break
-      default:
-        throw new Error(`Unsupported architecture on Android ${arch}`)
-    }
-    break
-  case 'win32':
-    switch (arch) {
-      case 'x64':
-        localFileExisted = existsSync(join(__dirname, 'package-template.win32-x64-msvc.node'))
-        try {
-          if (localFileExisted) {
-            nativeBinding = require('./package-template.win32-x64-msvc.node')
-          } else {
-            nativeBinding = require('@napi-rs/package-template-win32-x64-msvc')
-          }
-        } catch (e) {
-          loadError = e
-        }
-        break
-      case 'ia32':
-        localFileExisted = existsSync(join(__dirname, 'package-template.win32-ia32-msvc.node'))
-        try {
-          if (localFileExisted) {
-            nativeBinding = require('./package-template.win32-ia32-msvc.node')
-          } else {
-            nativeBinding = require('@napi-rs/package-template-win32-ia32-msvc')
-          }
-        } catch (e) {
-          loadError = e
-        }
-        break
-      case 'arm64':
-        localFileExisted = existsSync(join(__dirname, 'package-template.win32-arm64-msvc.node'))
-        try {
-          if (localFileExisted) {
-            nativeBinding = require('./package-template.win32-arm64-msvc.node')
-          } else {
-            nativeBinding = require('@napi-rs/package-template-win32-arm64-msvc')
-          }
-        } catch (e) {
-          loadError = e
-        }
-        break
-      default:
-        throw new Error(`Unsupported architecture on Windows: ${arch}`)
-    }
-    break
-  case 'darwin':
-    switch (arch) {
-      case 'x64':
-        localFileExisted = existsSync(join(__dirname, 'package-template.darwin-x64.node'))
-        try {
-          if (localFileExisted) {
-            nativeBinding = require('./package-template.darwin-x64.node')
-          } else {
-            nativeBinding = require('@napi-rs/package-template-darwin-x64')
-          }
-        } catch (e) {
-          loadError = e
-        }
-        break
-      case 'arm64':
-        localFileExisted = existsSync(join(__dirname, 'package-template.darwin-arm64.node'))
-        try {
-          if (localFileExisted) {
-            nativeBinding = require('./package-template.darwin-arm64.node')
-          } else {
-            nativeBinding = require('@napi-rs/package-template-darwin-arm64')
-          }
-        } catch (e) {
-          loadError = e
-        }
-        break
-      default:
-        throw new Error(`Unsupported architecture on macOS: ${arch}`)
-    }
-    break
-  case 'freebsd':
-    if (arch !== 'x64') {
-      throw new Error(`Unsupported architecture on FreeBSD: ${arch}`)
-    }
-    localFileExisted = existsSync(join(__dirname, 'package-template.freebsd-x64.node'))
-    try {
-      if (localFileExisted) {
-        nativeBinding = require('./package-template.freebsd-x64.node')
-      } else {
-        nativeBinding = require('@napi-rs/package-template-freebsd-x64')
-      }
-    } catch (e) {
-      loadError = e
-    }
-    break
-  case 'linux':
-    switch (arch) {
-      case 'x64':
-        if (isMusl()) {
-          localFileExisted = existsSync(join(__dirname, 'package-template.linux-x64-musl.node'))
-          try {
-            if (localFileExisted) {
-              nativeBinding = require('./package-template.linux-x64-musl.node')
-            } else {
-              nativeBinding = require('@napi-rs/package-template-linux-x64-musl')
-            }
-          } catch (e) {
-            loadError = e
-          }
-        } else {
-          localFileExisted = existsSync(join(__dirname, 'package-template.linux-x64-gnu.node'))
-          try {
-            if (localFileExisted) {
-              nativeBinding = require('./package-template.linux-x64-gnu.node')
-            } else {
-              nativeBinding = require('@napi-rs/package-template-linux-x64-gnu')
-            }
-          } catch (e) {
-            loadError = e
-          }
-        }
-        break
-      case 'arm64':
-        if (isMusl()) {
-          localFileExisted = existsSync(join(__dirname, 'package-template.linux-arm64-musl.node'))
-          try {
-            if (localFileExisted) {
-              nativeBinding = require('./package-template.linux-arm64-musl.node')
-            } else {
-              nativeBinding = require('@napi-rs/package-template-linux-arm64-musl')
-            }
-          } catch (e) {
-            loadError = e
-          }
-        } else {
-          localFileExisted = existsSync(join(__dirname, 'package-template.linux-arm64-gnu.node'))
-          try {
-            if (localFileExisted) {
-              nativeBinding = require('./package-template.linux-arm64-gnu.node')
-            } else {
-              nativeBinding = require('@napi-rs/package-template-linux-arm64-gnu')
-            }
-          } catch (e) {
-            loadError = e
-          }
-        }
-        break
-      case 'arm':
-        localFileExisted = existsSync(join(__dirname, 'package-template.linux-arm-gnueabihf.node'))
-        try {
-          if (localFileExisted) {
-            nativeBinding = require('./package-template.linux-arm-gnueabihf.node')
-          } else {
-            nativeBinding = require('@napi-rs/package-template-linux-arm-gnueabihf')
-          }
-        } catch (e) {
-          loadError = e
-        }
-        break
-      default:
-        throw new Error(`Unsupported architecture on Linux: ${arch}`)
-    }
-    break
-  default:
-    throw new Error(`Unsupported OS: ${platform}, architecture: ${arch}`)
+const adapters = {
+  android: {
+    display: 'Android',
+    supported: new Set(['arm64', 'arm']),
+  },
+  win32: {
+    display: 'Windows',
+    supported: new Set(['x64', 'ia32', 'arm64']),
+    libc() {
+      return 'msvc'
+    },
+  },
+  darwin: {
+    display: 'macOS',
+    supported: new Set(['x64', 'arm64']),
+  },
+  freebsd: {
+    display: 'FreeBSD',
+    supported: new Set(['x64']),
+  },
+  linux: {
+    display: 'Linux',
+    supported: new Set(['x64', 'arm64', 'arm']),
+    libc(architecture) {
+      if (architecture === 'arm')
+        return 'gnueabihf'
+      return isMusl() ? 'musl' : 'gnu'
+    },
+  },
 }
+
+function loadNativeBinding() {
+  const adapter = adapters[platform]
+  if (!adapter) {
+    throw new Error(`Unsupported OS: ${platform}, architecture: ${arch}`)
+  }
+  if (!adapter.supported.has(arch)) {
+    throw new Error(`Unsupported architecture on ${adapter.display}: ${arch}`)
+  }
+
+  const suffix = adapter.libc ? `-${adapter.libc(arch)}.node` : '.node'
+  const localFile = `package-template.${platform}-${arch}${suffix}`
+  const localFileExisted = existsSync(join(__dirname, localFile))
+
+  let nativeBinding = null
+  let loadError = null
+
+  try {
+    if (localFileExisted) {
+      nativeBinding = require(`./${localFile}`)
+    } else {
+      nativeBinding = require(`@napi-rs/package-template-${platform}-${arch}`)
+    }
+  } catch (e) {
+    loadError = e
+  } finally {
+    return [nativeBinding, loadError]
+  }
+}
+
+let [nativeBinding, loadError] = loadNativeBinding()
 
 if (!nativeBinding) {
   if (loadError) {
