@@ -98,13 +98,12 @@ jobs:
     name: stable - ${{ matrix.settings.target }} - node@18
     runs-on: ${{ matrix.settings.host }}
     steps:
-      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
+      - uses: actions/checkout@4
       - name: Setup node
         uses: actions/setup-node@v3
         if: ${{ !matrix.settings.docker }}
         with:
           node-version: 18
-          check-latest: true
           cache: yarn
       - name: Install
         uses: dtolnay/rust-toolchain@stable
@@ -125,7 +124,7 @@ jobs:
       - uses: goto-bus-stop/setup-zig@v2
         if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' }}
         with:
-          version: 0.10.1
+          version: 0.11.0
       - name: Setup toolchain
         run: ${{ matrix.settings.setup }}
         if: ${{ matrix.settings.setup }}
@@ -165,7 +164,7 @@ jobs:
     runs-on: macos-12
     name: Build FreeBSD
     steps:
-      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
+      - uses: actions/checkout@4
       - name: Build
         id: build
         uses: vmactions/freebsd-vm@v0
@@ -179,7 +178,8 @@ jobs:
           usesh: true
           mem: 3000
           prepare: |
-            pkg install -y -f curl node libnghttp2 npm yarn
+            pkg install -y -f curl node libnghttp2 npm
+            npm install -g yarn --ignore-scripts
             curl https://sh.rustup.rs -sSf --output rustup.sh
             sh rustup.sh -y --profile minimal --default-toolchain beta
             export PATH="/usr/local/cargo/bin:$PATH"
@@ -222,17 +222,15 @@ jobs:
           - host: macos-latest
             target: x86_64-apple-darwin
         node:
-          - '14'
           - '16'
           - '18'
     runs-on: ${{ matrix.settings.host }}
     steps:
-      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
+      - uses: actions/checkout@4
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-          check-latest: true
           cache: yarn
       - name: Install dependencies
         run: yarn install
@@ -254,17 +252,15 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - '14'
           - '16'
           - '18'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
+      - uses: actions/checkout@4
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-          check-latest: true
           cache: yarn
       - name: Install dependencies
         run: yarn install
@@ -286,17 +282,15 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - '14'
           - '16'
           - '18'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
+      - uses: actions/checkout@4
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-          check-latest: true
           cache: yarn
       - name: Install dependencies
         run: |
@@ -320,12 +314,11 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - '14'
           - '16'
           - '18'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
+      - uses: actions/checkout@4
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -359,7 +352,7 @@ jobs:
       - build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
+      - uses: actions/checkout@4
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -394,12 +387,11 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - '14'
           - '16'
           - '18'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
+      - uses: actions/checkout@4
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -438,12 +430,11 @@ jobs:
       - test-linux-aarch64-musl-binding
       - test-linux-arm-gnueabihf-binding
     steps:
-      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
+      - uses: actions/checkout@4
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          check-latest: true
           cache: yarn
       - name: Install dependencies
         run: yarn install
