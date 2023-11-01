@@ -140,7 +140,6 @@ jobs:
         if: matrix.settings.target == 'i686-pc-windows-msvc'
         with:
           node-version: 18
-          check-latest: true
           cache: yarn
           architecture: x86
       - name: Build in docker
@@ -167,30 +166,29 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build
         id: build
-        uses: vmactions/freebsd-vm@v0
+        uses: cross-platform-actions/action@v0.21.0
         env:
           DEBUG: napi:*
-          RUSTUP_HOME: /usr/local/rustup
-          CARGO_HOME: /usr/local/cargo
           RUSTUP_IO_THREADS: 1
         with:
-          envs: DEBUG RUSTUP_HOME CARGO_HOME RUSTUP_IO_THREADS
-          usesh: true
-          mem: 3000
-          prepare: |
-            pkg install -y -f curl node libnghttp2 npm
-            npm install -g yarn --ignore-scripts
+          operating_system: freebsd
+          version: '13.2'
+          memory: 13G
+          cpu_count: 3
+          environment_variables: 'DEBUG RUSTUP_IO_THREADS'
+          shell: bash
+          run: |
+            sudo pkg install -y -f curl node libnghttp2 npm
+            sudo npm install -g yarn --ignore-scripts
             curl https://sh.rustup.rs -sSf --output rustup.sh
             sh rustup.sh -y --profile minimal --default-toolchain beta
-            export PATH="/usr/local/cargo/bin:$PATH"
+            source "$HOME/.cargo/env"
             echo "~~~~ rustc --version ~~~~"
             rustc --version
             echo "~~~~ node -v ~~~~"
             node -v
             echo "~~~~ yarn --version ~~~~"
             yarn --version
-          run: |
-            export PATH="/usr/local/cargo/bin:$PATH"
             pwd
             ls -lah
             whoami
@@ -198,8 +196,6 @@ jobs:
             freebsd-version
             yarn install
             yarn build
-            strip -x *.node
-            yarn test
             rm -rf node_modules
             rm -rf target
             rm -rf .yarn/cache
@@ -222,8 +218,8 @@ jobs:
           - host: macos-latest
             target: x86_64-apple-darwin
         node:
-          - '16'
           - '18'
+          - '20'
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v4
@@ -252,8 +248,8 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - '16'
           - '18'
+          - '20'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -282,8 +278,8 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - '16'
           - '18'
+          - '20'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -314,8 +310,8 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - '16'
           - '18'
+          - '20'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -347,7 +343,7 @@ jobs:
             yarn test
             ls -la
   test-linux-aarch64-musl-binding:
-    name: Test bindings on aarch64-unknown-linux-musl - node@${{ matrix.node }}
+    name: Test bindings on aarch64-unknown-linux-musl - node@lts
     needs:
       - build
     runs-on: ubuntu-latest
@@ -387,8 +383,8 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - '16'
           - '18'
+          - '20'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -449,6 +445,7 @@ jobs:
         shell: bash
       - name: Publish
         run: |
+          npm config set provenance true
           if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$";
           then
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
