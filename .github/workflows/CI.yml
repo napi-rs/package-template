@@ -163,7 +163,7 @@ jobs:
           path: ${{ env.APP_NAME }}.*.node
           if-no-files-found: error
   build-freebsd:
-    runs-on: macos-13
+    runs-on: macos-14
     name: Build FreeBSD
     steps:
       - uses: actions/checkout@v4
