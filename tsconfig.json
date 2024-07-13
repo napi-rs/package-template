@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
+    "target": "ESNext",
     "strict": true,
     "moduleResolution": "node",
     "module": "CommonJS",
@@ -10,5 +10,5 @@
     "allowSyntheticDefaultImports": true
   },
   "include": ["."],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "bench", "__test__"]
 }

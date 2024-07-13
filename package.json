@@ -44,41 +44,36 @@
   },
   "scripts": {
     "artifacts": "napi artifacts",
-    "bench": "node -r @swc-node/register benchmark/bench.ts",
-    "build": "napi build --platform --release --pipe \"prettier -w\"",
-    "build:debug": "napi build --platform --pipe \"prettier -w\"",
+    "bench": "node --import @swc-node/register/esm-register benchmark/bench.ts",
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform",
     "format": "run-p format:prettier format:rs format:toml",
     "format:prettier": "prettier . -w",
     "format:toml": "taplo format",
     "format:rs": "cargo fmt",
-    "lint": "eslint . -c ./.eslintrc.yml",
+    "lint": "oxlint .",
     "prepublishOnly": "napi prepublish -t npm",
     "test": "ava",
     "version": "napi version"
   },
   "devDependencies": {
-    "@napi-rs/cli": "^2.16.4",
-    "@swc-node/register": "^1.6.8",
-    "@swc/core": "^1.3.95",
+    "@napi-rs/cli": "^2.18.4",
+    "@swc-node/register": "^1.10.6",
+    "@swc/core": "^1.6.13",
     "@taplo/cli": "^0.7.0",
-    "@typescript-eslint/eslint-plugin": "^7.0.0",
-    "@typescript-eslint/parser": "^7.0.0",
-    "ava": "^6.0.0",
-    "benny": "^3.7.1",
+    "ava": "^6.1.3",
     "chalk": "^5.3.0",
-    "eslint": "^8.52.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-import": "^2.29.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "husky": "^9.0.0",
-    "lint-staged": "^15.0.2",
-    "npm-run-all2": "^6.0.0",
-    "prettier": "^3.0.3",
-    "typescript": "^5.2.2"
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.7",
+    "npm-run-all2": "^6.2.2",
+    "oxlint": "^0.6.0",
+    "prettier": "^3.3.3",
+    "tinybench": "^2.8.0",
+    "typescript": "^5.5.3"
   },
   "lint-staged": {
     "*.@(js|ts|tsx)": [
-      "eslint -c .eslintrc.yml --fix"
+      "oxlint --fix"
     ],
     "*.@(js|ts|tsx|yml|yaml|md|json)": [
       "prettier --write"
@@ -88,17 +83,18 @@
     ]
   },
   "ava": {
-    "require": [
-      "@swc-node/register"
-    ],
-    "extensions": [
-      "ts"
-    ],
+    "extensions": {
+      "ts": "module"
+    },
     "timeout": "2m",
     "workerThreads": false,
     "environmentVariables": {
       "TS_NODE_PROJECT": "./tsconfig.json"
-    }
+    },
+    "nodeArguments": [
+      "--import",
+      "@swc-node/register/esm-register"
+    ]
   },
   "prettier": {
     "printWidth": 120,

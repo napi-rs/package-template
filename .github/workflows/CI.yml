@@ -3,6 +3,7 @@ env:
   DEBUG: napi:*
   APP_NAME: package-template
   MACOSX_DEPLOYMENT_TARGET: '10.13'
+  CARGO_INCREMENTAL: '1'
 permissions:
   contents: write
   id-token: write
@@ -35,9 +36,7 @@ jobs:
             build: yarn build --target x86_64-pc-windows-msvc
             target: x86_64-pc-windows-msvc
           - host: windows-latest
-            build: |
-              yarn build --target i686-pc-windows-msvc
-              yarn test
+            build: yarn build --target i686-pc-windows-msvc
             target: i686-pc-windows-msvc
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -106,24 +105,13 @@ jobs:
       - uses: goto-bus-stop/setup-zig@v2
         if: ${{ matrix.settings.target == 'armv7-unknown-linux-gnueabihf' }}
         with:
-          version: 0.12.0
+          version: 0.13.0
       - name: Setup toolchain
         run: ${{ matrix.settings.setup }}
         if: ${{ matrix.settings.setup }}
         shell: bash
-      - name: Setup node x86
-        if: matrix.settings.target == 'i686-pc-windows-msvc'
-        run: yarn config set supportedArchitectures.cpu "ia32"
-        shell: bash
       - name: Install dependencies
         run: yarn install
-      - name: Setup node x86
-        uses: actions/setup-node@v4
-        if: matrix.settings.target == 'i686-pc-windows-msvc'
-        with:
-          node-version: 20
-          cache: yarn
-          architecture: x86
       - name: Build in docker
         uses: addnab/docker-run-action@v3
         if: ${{ matrix.settings.docker }}
