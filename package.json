@@ -54,7 +54,8 @@
     "lint": "oxlint .",
     "prepublishOnly": "napi prepublish -t npm",
     "test": "ava",
-    "version": "napi version"
+    "version": "napi version",
+    "postinstall": "husky"
   },
   "devDependencies": {
     "@napi-rs/cli": "^2.18.4",
