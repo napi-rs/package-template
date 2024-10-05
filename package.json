@@ -55,7 +55,7 @@
     "prepublishOnly": "napi prepublish -t npm",
     "test": "ava",
     "version": "napi version",
-    "postinstall": "husky"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@napi-rs/cli": "^2.18.4",
