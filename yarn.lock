@@ -76,7 +76,7 @@ __metadata:
     npm-run-all2: "npm:^7.0.0"
     oxlint: "npm:^0.10.0"
     prettier: "npm:^3.3.3"
-    tinybench: "npm:^2.8.0"
+    tinybench: "npm:^3.0.0"
     typescript: "npm:^5.5.3"
   languageName: unknown
   linkType: soft
@@ -2266,10 +2266,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinybench@npm:^2.8.0":
-  version: 2.8.0
-  resolution: "tinybench@npm:2.8.0"
-  checksum: 10c0/5a9a642351fa3e4955e0cbf38f5674be5f3ba6730fd872fd23a5c953ad6c914234d5aba6ea41ef88820180a81829ceece5bd8d3967c490c5171bca1141c2f24d
+"tinybench@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "tinybench@npm:3.0.0"
+  checksum: 10c0/47d5f532b12be9e7898a7a9048428ba88fd8e1a2ceb3ddd46a297cfc1e90130b18866c3deacd423778d53a8de7267d0e80acdf964c5490891b78d31e06742821
   languageName: node
   linkType: hard
 
