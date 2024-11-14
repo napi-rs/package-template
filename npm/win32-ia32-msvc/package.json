@@ -1,5 +1,5 @@
 {
-  "name": "@napi-rs/package-template-win32-ia32-msvc",
+  "name": "flowstate-demo-win32-ia32-msvc",
   "version": "1.0.0",
   "os": [
     "win32"
@@ -7,9 +7,9 @@
   "cpu": [
     "ia32"
   ],
-  "main": "package-template.win32-ia32-msvc.node",
+  "main": "flowstate-demo.win32-ia32-msvc.node",
   "files": [
-    "package-template.win32-ia32-msvc.node"
+    "flowstate-demo.win32-ia32-msvc.node"
   ],
   "description": "Template project for writing node package with napi-rs",
   "keywords": [

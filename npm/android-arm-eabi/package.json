@@ -1,5 +1,5 @@
 {
-  "name": "@napi-rs/package-template-android-arm-eabi",
+  "name": "flowstate-demo-android-arm-eabi",
   "version": "1.0.0",
   "os": [
     "android"
@@ -7,9 +7,9 @@
   "cpu": [
     "arm"
   ],
-  "main": "package-template.android-arm-eabi.node",
+  "main": "flowstate-demo.android-arm-eabi.node",
   "files": [
-    "package-template.android-arm-eabi.node"
+    "flowstate-demo.android-arm-eabi.node"
   ],
   "description": "Template project for writing node package with napi-rs",
   "keywords": [

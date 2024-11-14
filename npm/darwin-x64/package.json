@@ -1,5 +1,5 @@
 {
-  "name": "@napi-rs/package-template-darwin-x64",
+  "name": "flowstate-demo-darwin-x64",
   "version": "1.0.0",
   "os": [
     "darwin"
@@ -7,9 +7,9 @@
   "cpu": [
     "x64"
   ],
-  "main": "package-template.darwin-x64.node",
+  "main": "flowstate-demo.darwin-x64.node",
   "files": [
-    "package-template.darwin-x64.node"
+    "flowstate-demo.darwin-x64.node"
   ],
   "description": "Template project for writing node package with napi-rs",
   "keywords": [

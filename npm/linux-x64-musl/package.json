@@ -1,5 +1,5 @@
 {
-  "name": "@napi-rs/package-template-linux-x64-musl",
+  "name": "flowstate-demo-linux-x64-musl",
   "version": "1.0.0",
   "os": [
     "linux"
@@ -7,12 +7,9 @@
   "cpu": [
     "x64"
   ],
-  "libc": [
-    "musl"
-  ],
-  "main": "package-template.linux-x64-musl.node",
+  "main": "flowstate-demo.linux-x64-musl.node",
   "files": [
-    "package-template.linux-x64-musl.node"
+    "flowstate-demo.linux-x64-musl.node"
   ],
   "description": "Template project for writing node package with napi-rs",
   "keywords": [
@@ -31,5 +28,8 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "repository": "git@github.com:napi-rs/package-template.git"
+  "repository": "git@github.com:napi-rs/package-template.git",
+  "libc": [
+    "musl"
+  ]
 }

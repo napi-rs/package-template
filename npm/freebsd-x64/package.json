@@ -1,5 +1,5 @@
 {
-  "name": "@napi-rs/package-template-freebsd-x64",
+  "name": "flowstate-demo-freebsd-x64",
   "version": "1.0.0",
   "os": [
     "freebsd"
@@ -7,9 +7,9 @@
   "cpu": [
     "x64"
   ],
-  "main": "package-template.freebsd-x64.node",
+  "main": "flowstate-demo.freebsd-x64.node",
   "files": [
-    "package-template.freebsd-x64.node"
+    "flowstate-demo.freebsd-x64.node"
   ],
   "description": "Template project for writing node package with napi-rs",
   "keywords": [

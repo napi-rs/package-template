@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flowstate Demo</title>
+  </head>
+  <body>
+    <button onclick="callPlus100()">click!</button>
+    <h1 id="result"></h1>
+
+    <script>
+      async function callPlus100() {
+        const input = 0
+        const response = await fetch(`http://localhost:3000/plus100?input=${input}`)
+        const data = await response.json()
+        document.getElementById('result').textContent = `${data.result}`
+      }
+    </script>
+  </body>
+</html>
