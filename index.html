@@ -4,18 +4,64 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flowstate Demo</title>
+    <link rel="icon" href="./assets/ferris_mascot.png" />
+    <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <button onclick="callPlus100()">click!</button>
-    <h1 id="result"></h1>
-
-    <script>
-      async function callPlus100() {
-        const input = 0
-        const response = await fetch(`http://localhost:3000/plus100?input=${input}`)
-        const data = await response.json()
-        document.getElementById('result').textContent = `${data.result}`
-      }
-    </script>
+    <div class="header">
+      <div class="headerContainer">
+        <img class="headerLogo" src="./assets/ferris_mascot.png" alt="Ferris the Crab" />
+        <h1>Crab Shop</h1>
+      </div>
+      <div>
+        <button id="crashApp">Crash Application</button>
+      </div>
+    </div>
+    <div class="container">
+      <div class="about">
+        <h2>About This App</h2>
+        <p><strong>Transaction Order:</strong></p>
+        <p><strong>When customer clicks 'Add to Cart':</strong></p>
+        <ol>
+          <li>Check if the Website has enough inventory</li>
+          <li>Decrease the Website Inventory</li>
+        </ol>
+        <p><strong>When customer clicks 'Confirm Payment':</strong></p>
+        <ol>
+          <li>Check if the Warehouse has enough inventory</li>
+          <li>Decrease the Warehouse Inventory</li>
+          <li>Subtract from Customer's Bank</li>
+        </ol>
+      </div>
+      <div class="purchase">
+        <h2>Purchase Ferris the Crab!</h2>
+        <img src="./assets/ferris_buy.png" alt="Ferris the Crab" />
+        <button class="addToCartButton" id="mainButton">Add To Cart</button>
+      </div>
+      <div class="info">
+        <div class="info-container">
+          <h3>Website Inventory</h3>
+          <div></div>
+          <p id="websiteInventory">100</p>
+        </div>
+        <div class="info-container">
+          <h3>Warehouse Inventory</h3>
+          <div></div>
+          <p id="warehouseInventory">100</p>
+        </div>
+        <div class="info-container">
+          <h3>Customer's Bank</h3>
+          <div></div>
+          <p id="customerBank">$1000</p>
+        </div>
+      </div>
+    </div>
+    <div class="progress">
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <p class="progress-text" id="progressText">Progress: Waiting for "Add To Cart"...</p>
+    </div>
+    <script type="text/javascript" src="common.js"></script>
   </body>
 </html>

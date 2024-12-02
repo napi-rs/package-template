@@ -1,0 +1,166 @@
+button {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, sans-serif;
+}
+
+body {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0,0,0,0.05);
+}
+
+.header {
+    width: 100%;
+    padding: 12px 0px;
+    color: black;
+    background: rgb(252, 252, 252);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 1px 2px 10px rgba(0,0,0,0.1);    
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.header button {
+    background-color: #F74C00;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    margin: 0px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.headerLogo {
+    width: 50px;
+    margin: 0 10px;
+}
+
+.headerContainer {
+    display: flex;
+    flex-direction: row;
+    margin: 0px 5px;
+}
+
+.container {
+    display: flex;
+    margin: 20px;
+    width: 88%;
+}
+
+.about, .purchase {
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    margin: 10px;
+    padding: 20px;
+    height: 450px;
+    min-height: fit-content;
+    background: rgb(252, 252, 252);
+    box-shadow: 1px 2px 5px rgba(0,0,0,0.1);
+}
+
+.info {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.info-container {
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background: rgb(252, 252, 252);
+    box-shadow: 1px 2px 5px rgba(0,0,0,0.1);
+    height: 135px;
+    min-height: fit-content;
+}
+
+.info-container h3 {
+    text-align: center;
+    margin: 10px 0px;
+}
+
+.info-container div {
+    height: 1px;
+    margin: auto;
+    padding: 0;
+    width: 95%;
+    background: rgb(153, 153, 153);
+}
+
+.info-container p {
+    text-align: center;
+    font-size: 18px;
+}
+
+.about {
+    flex: 1 1 20%;
+    padding: 6px 20px;
+    height: 478px;
+}
+.purchase {
+    flex: 1 1 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.purchase h2 {
+    font-size: 28px;
+}
+
+.purchase img {
+    width: 420px;
+}
+
+.purchase button {
+    margin-top: 25px;
+    padding: 10px 50px;
+    background-color: #2E509B;
+    color: white;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.info {
+    flex: 1 1 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.progress {
+    width: 100%;
+}
+
+.progress-bar-container {
+    margin: auto;
+    margin-top: 20px;
+    width: 85%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+    background: #e4e4e4;
+}
+.progress-bar {
+    height: 20px;
+    width: 0%;
+    background-color: #F58400;
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 18px;
+}
