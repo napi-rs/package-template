@@ -7,10 +7,11 @@ const customerBankText = document.getElementById('customerBank');
 const progressBar = document.getElementById('progressBar')
 const progressText = document.getElementById('progressText')
 const button = document.getElementById('mainButton')
+const url = "http://localhost:3000"
 let page;
 
 async function getPage() {
-  const res = await fetch('http://localhost:3000/page', {
+  const res = await fetch(`${url}/page`, {
     method: "POST"
   });
   const data = await res.json();
@@ -18,7 +19,7 @@ async function getPage() {
 }
 
 async function getData() {
-  const res = await fetch('http://localhost:3000/data', {
+  const res = await fetch(`${url}/data`, {
     method: "POST"
   });
   const data = await res.json();
@@ -48,13 +49,13 @@ window.onload = async function() {
 };
 
 async function addToCart() {
-  const incrementRes = await fetch("http://localhost:3000/incrementPage", {
+  const incrementRes = await fetch(`${url}/incrementPage`, {
     method: "POST"
   });
   const data = await incrementRes.json();
   page = data.result;
 
-  const addToCartUrl = `http://localhost:3000/addToCart`;
+  const addToCartUrl = `${url}/addToCart`;
   const addToCartRes = await fetch(addToCartUrl, {
       method: "POST"
   });
@@ -69,7 +70,7 @@ async function addToCart() {
 }
 
 async function confirmPayment() {
-  const confirmPaymentUrl = `http://localhost:3000/confirmPayment`;
+  const confirmPaymentUrl = `${url}/confirmPayment`;
   const confirmPaymentRes = await fetch(confirmPaymentUrl, {
     method: "POST"
   });
@@ -77,7 +78,7 @@ async function confirmPayment() {
   warehouseInventory = data.result.warehouseInventory;
   customerBank = data.result.customerBank;
 
-  const decrementPageUrl = 'http://localhost:3000/decrementPage';
+  const decrementPageUrl = `${url}/decrementPage`;
   const decrementPageRes = await fetch(decrementPageUrl, {
     method: "POST"
   });
