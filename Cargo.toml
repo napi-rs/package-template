@@ -1,7 +1,7 @@
 [package]
 authors = ["LongYinan <lynweklm@gmail.com>"]
 edition = "2021"
-name    = "napi-package-template"
+name    = "flowstate"
 version = "0.1.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -10,11 +10,23 @@ version = "0.1.0"
 crate-type = ["cdylib"]
 
 [dependencies]
-napi        = "2"
+anyhow = "1.0.94"
+aws-config = "1.5.10"
+aws-sdk-dynamodb = "1.55.0"
+aws-sdk-lambda = "1.60.0"
+dotenv = "0.15.0"
+lambda_runtime = "0.13.0"
+lambda_runtime_api_client = "0.11.1"
+napi        = { version = "2", features = ["async"] }
 napi-derive = "2"
+serde_json = "1.0.133"
+tokio = "1.42.0"
+tower-service = "0.3.3"
+uuid = { version = "1.11.0", features = ["v4"] }
 
 [build-dependencies]
 napi-build = "2"
 
 [profile.release]
 lto = true
+panic = "unwind"
