@@ -51,7 +51,7 @@ jobs:
             build: yarn build --target aarch64-apple-darwin
           - host: ubuntu-latest
             target: aarch64-unknown-linux-gnu
-            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian-aarch64
+            docker: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian@sha256:6e3aab240ddfa7dc803b66807659ced622a4dade6f4eb235efb88e5f61ef6965
             build: yarn build --target aarch64-unknown-linux-gnu
           - host: ubuntu-latest
             target: armv7-unknown-linux-gnueabihf
