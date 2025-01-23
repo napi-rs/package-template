@@ -1,7 +1,10 @@
 use std::sync::Arc;
+use std::time::Duration;
 
 use aws_config::BehaviorVersion;
-use aws_sdk_dynamodb::types::{AttributeValue, ProvisionedThroughput, AttributeDefinition, KeySchemaElement};
+use aws_sdk_dynamodb::types::{
+  AttributeDefinition, AttributeValue, KeySchemaElement, ProvisionedThroughput,
+};
 use aws_sdk_lambda::types::InvocationType::RequestResponse;
 use flowstate::flowstate_client::FlowstateClient;
 use flowstate::linked_daal::LinkedDAAL;
@@ -24,14 +27,18 @@ pub async fn continuously_retry_function(lambda_function_arn: String) -> Result<
 
   let lambda_client = aws_sdk_lambda::Client::new(&config);
 
+  let simulated_request_id = uuid::Uuid::new_v4().to_string();
+
   loop {
     let sebastian = json!({
         "key": "value",
+        "request_id": simulated_request_id
     });
 
     let serialized_input = serde_json::to_vec(&sebastian)
       .map_err(|_err| napi::Error::new(napi::Status::InvalidArg, "serialize input failed"))?;
 
+    println!("Attempting to invoke function");
     let invoke_result = lambda_client
       .invoke()
       .invocation_type(RequestResponse)
@@ -42,6 +49,12 @@ pub async fn continuously_retry_function(lambda_function_arn: String) -> Result<
 
     match invoke_result {
       Ok(invoke_output) => {
+        if invoke_output.function_error.is_some() {
+          println!("Function crashed while attempting to complete, restarting after 5 seconds...");
+          std::thread::sleep(Duration::from_secs(5));
+          continue;
+        }
+
         let serialized_output: String = invoke_output.payload.map_or_else(
           || "".to_string(),
           |blob| String::from_utf8_lossy(&blob.into_inner()).into_owned(),
@@ -50,7 +63,11 @@ pub async fn continuously_retry_function(lambda_function_arn: String) -> Result<
         return Ok(serialized_output);
       }
       Err(e) => {
-        println!("{:?}", e);
+        println!(
+          "!!! Function crashed with error: {:?}. Restarting after 5 seconds...",
+          e
+        );
+        std::thread::sleep(Duration::from_secs(5));
       }
     }
   }
