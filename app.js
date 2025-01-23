@@ -55,9 +55,6 @@ app.post('/confirmPayment', async (req, res) => {
   customerBank = customerBank - 10
 
   console.log('1')
-  let res1 = hi(1)
-  console.log(res1)
-
   const LAMBDA_FUNCTION_ARN = 'arn:aws:lambda:us-east-1:000000000000:function:demo_purchase_function'
 
   let res2 = await continuouslyRetryFunction(LAMBDA_FUNCTION_ARN)

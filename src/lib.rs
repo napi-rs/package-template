@@ -3,9 +3,9 @@ use std::sync::Arc;
 use aws_config::BehaviorVersion;
 use aws_sdk_dynamodb::types::{AttributeValue, ProvisionedThroughput};
 use aws_sdk_lambda::types::InvocationType::RequestResponse;
-use flowstate::aws_client::AWSClient;
 use flowstate::flowstate_client::FlowstateClient;
 use flowstate::linked_daal::LinkedDAAL;
+use flowstate::{aws_client::AWSClient, linked_daal};
 use napi::{Error, Result};
 use napi_derive::napi;
 use serde_json::json;
@@ -24,7 +24,6 @@ pub async fn continuously_retry_function(lambda_function_arn: String) -> Result<
 
   let lambda_client = aws_sdk_lambda::Client::new(&config);
 
-  // sleep for 5 seconds in between the two write
   loop {
     let sebastian = json!({
         "key": "value",
@@ -66,11 +65,18 @@ pub async fn create_inventory_table() -> Result<()> {
     .map_err(|e| Error::from_reason(format!("Creating flowstate client failed {:?}", e)))?;
 
   let table_name = INVENTORY_TABLE;
-  let inventory_table = LinkedDAAL::create_new(&flowstate_client.aws_client, table_name)
-    .await
-    .map_err(|e| Error::from_reason(format!("Creating inventory table failed {:?}", e)))?;
+  let inventory_table = LinkedDAAL::use_linked_daal(&flowstate_client.aws_client, table_name).await;
 
-  flowstate_client.register_daal(&table_name, inventory_table);
+  let row_hash = inventory_table
+    .create_new_row("website_inventory", None)
+    .await
+    .unwrap();
+
+  flowstate_client
+    .write(table_name, "website_inventory", "1000")
+    .await
+    .map_err(|e| Error::from_reason(format!("Initializing website inventory failed {:?}", e)))?;
+
   Ok(())
 }
 
