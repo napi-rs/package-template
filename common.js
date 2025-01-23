@@ -9,6 +9,7 @@ const progressText = document.getElementById('progressText')
 const button = document.getElementById('mainButton')
 const url = 'http://localhost:3000'
 let page
+let confirmLoading = false;
 
 async function getPage() {
   const res = await fetch(`${url}/page`, {
@@ -28,10 +29,21 @@ async function getData() {
   customerBank = data.result.customerBank
 }
 
+function updateLoadingButton() {
+  if (page === 1 && confirmLoading == false) {
+    button.innerHTML = 'Confirm Payment'
+    button.style.background = '#128132'
+  } else {
+    button.innerHTML = 'Loading...'
+    button.style.background = '#c9c9c9'
+    button.style.cursor = 'default'
+  }
+}
 function updateData() {
   if (page === 0) {
     button.innerHTML = 'Add to Cart'
     button.style.background = '#2E509B'
+    button.style.cursor = 'pointer'
   } else {
     button.innerHTML = 'Confirm Payment'
     button.style.background = '#128132'
@@ -69,6 +81,8 @@ async function addToCart() {
 }
 
 async function confirmPayment() {
+  confirmLoading = true
+  updateLoadingButton()
   const confirmPaymentUrl = `${url}/confirmPayment`
   const confirmPaymentRes = await fetch(confirmPaymentUrl, {
     method: 'POST',
@@ -84,6 +98,7 @@ async function confirmPayment() {
   const pageData = await decrementPageRes.json()
   page = pageData.result
   updateData()
+  confirmLoading = false
 }
 
 button.addEventListener('click', async () => {
