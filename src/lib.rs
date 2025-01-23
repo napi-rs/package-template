@@ -67,16 +67,13 @@ pub async fn create_inventory_table() -> Result<()> {
   let table_name = INVENTORY_TABLE;
   let inventory_table = LinkedDAAL::use_linked_daal(&flowstate_client.aws_client, table_name).await;
 
-  let row_hash = inventory_table
-    .create_new_row("website_inventory", None)
-    .await
-    .unwrap();
-
+  flowstate_client.register_daal(table_name, inventory_table);
   flowstate_client
     .write(table_name, "website_inventory", "1000")
     .await
     .map_err(|e| Error::from_reason(format!("Initializing website inventory failed {:?}", e)))?;
 
+  println!("finished creating inventory table!");
   Ok(())
 }
 
