@@ -1,28 +1,30 @@
+use std::sync::Arc;
+
 use aws_config::BehaviorVersion;
+use aws_sdk_dynamodb::types::{AttributeValue, ProvisionedThroughput};
 use aws_sdk_lambda::types::InvocationType::RequestResponse;
-use napi::Result;
+use flowstate::aws_client::AWSClient;
+use flowstate::flowstate_client::FlowstateClient;
+use flowstate::linked_daal::LinkedDAAL;
+use napi::{Error, Result};
 use napi_derive::napi;
 use serde_json::json;
 
-#[napi]
-pub fn plus_100(input: u32) -> u32 {
-  input + 110
-}
-
-#[napi]
-pub fn hi(input: u32) -> u32 {
-  input + 500
-}
+const CRASH_TABLE: &str = "crash_table";
+const INVENTORY_TABLE: &str = "inventory_table";
+const AWS_ENDPOINT_URL: &str = "http://localhost:4566";
 
 #[napi]
 pub async fn continuously_retry_function(lambda_function_arn: String) -> Result<String> {
   let config = aws_config::defaults(BehaviorVersion::latest())
     .region("us-east-1")
+    .endpoint_url(AWS_ENDPOINT_URL)
     .load()
     .await;
 
   let lambda_client = aws_sdk_lambda::Client::new(&config);
 
+  // sleep for 5 seconds in between the two write
   loop {
     let sebastian = json!({
         "key": "value",
@@ -53,4 +55,119 @@ pub async fn continuously_retry_function(lambda_function_arn: String) -> Result<
       }
     }
   }
+}
+
+#[napi]
+pub async fn create_inventory_table() -> Result<()> {
+  let aws_client =
+    AWSClient::new_with_endpoints("us-east-1", Some(AWS_ENDPOINT_URL.to_string()), None).await;
+  let mut flowstate_client = FlowstateClient::new_async(Arc::new(aws_client), "ignore")
+    .await
+    .map_err(|e| Error::from_reason(format!("Creating flowstate client failed {:?}", e)))?;
+
+  let table_name = INVENTORY_TABLE;
+  let inventory_table = LinkedDAAL::create_new(&flowstate_client.aws_client, table_name)
+    .await
+    .map_err(|e| Error::from_reason(format!("Creating inventory table failed {:?}", e)))?;
+
+  flowstate_client.register_daal(&table_name, inventory_table);
+  Ok(())
+}
+
+#[napi]
+pub async fn create_crash_table() -> Result<()> {
+  let config = aws_config::defaults(BehaviorVersion::latest())
+    .region("us-east-1")
+    .endpoint_url(AWS_ENDPOINT_URL)
+    .load()
+    .await;
+
+  let aws_client = aws_sdk_dynamodb::Client::new(&config);
+
+  let throughput = ProvisionedThroughput::builder()
+    .read_capacity_units(5)
+    .write_capacity_units(5)
+    .build()
+    .map_err(|e| Error::from_reason(format!("Throughput provisioning {:?}", e)))?;
+
+  aws_client
+    .create_table()
+    .table_name(CRASH_TABLE)
+    .attribute_definitions(
+      aws_sdk_dynamodb::types::AttributeDefinition::builder()
+        .attribute_name("mode")
+        .attribute_type("S".into())
+        .build()
+        .unwrap(),
+    )
+    .key_schema(
+      aws_sdk_dynamodb::types::KeySchemaElement::builder()
+        .attribute_name("mode")
+        .key_type("HASH".into())
+        .build()
+        .unwrap(),
+    )
+    .provisioned_throughput(throughput)
+    .send()
+    .await
+    .map_err(|e| Error::from_reason(format!("Creating crash table failed {:?}", e)))?;
+
+  aws_client
+    .put_item()
+    .table_name(CRASH_TABLE)
+    .item("mode", AttributeValue::S("0".to_string()))
+    .send()
+    .await
+    .map_err(|e| Error::from_reason(format!("Inserting initial value failed {:?}", e)))?;
+
+  println!("finished creating crash table!");
+  Ok(())
+}
+
+#[napi]
+pub async fn toggle_crash_table() -> Result<()> {
+  let config = aws_config::defaults(BehaviorVersion::latest())
+    .region("us-east-1")
+    .endpoint_url(AWS_ENDPOINT_URL)
+    .load()
+    .await;
+
+  let aws_client = aws_sdk_dynamodb::Client::new(&config);
+
+  let curr_val = aws_client
+    .get_item()
+    .table_name(CRASH_TABLE)
+    .key("mode", AttributeValue::S("mode".to_string()))
+    .send()
+    .await
+    .map_err(|e| Error::from_reason(format!("Reading from crash table failed {:?}", e)))?;
+
+  if let Some(value_map) = curr_val.item() {
+    if let Some(crash_value) = value_map.get("key") {
+      let current_value = crash_value.as_s().map_err(|e| {
+        Error::from_reason(format!(
+          "Crash value didn't map to string correctly {:?}",
+          e
+        ))
+      })?;
+
+      // prob add some null / not found whatever checks here...
+      let new_value = if current_value == "0" { "1" } else { "0" };
+
+      // then actually update the table with this new value
+      aws_client
+        .put_item()
+        .table_name(CRASH_TABLE)
+        .item("mode", AttributeValue::S(new_value.to_string()))
+        .send()
+        .await
+        .map_err(|e| Error::from_reason(format!("Reading from crash table failed {:?}", e)))?;
+    } else {
+      return Err(Error::from_reason("Couldn't get crash value correctly!"));
+    }
+  } else {
+    return Err(Error::from_reason("Couldn't get item value map correctly!"));
+  }
+
+  Ok(())
 }

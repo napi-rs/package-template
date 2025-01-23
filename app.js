@@ -1,67 +1,90 @@
-const express = require('express');
-const cors = require('cors');
+const express = require('express')
+const cors = require('cors')
 
-const { plus100, hi, continuouslyRetryFunction } = require('./index');
-let page = 0;
-let websiteInventory = 100;
-let warehouseInventory = 100;
-let customerBank = 1000;
+const { continuouslyRetryFunction, createCrashTable, createInventoryTable, toggleCrashTable } = require('./index')
 
-const app = express();
-app.use(cors()); 
-app.use(express.json());
+let page = 0
+let websiteInventory = 100
+let warehouseInventory = 100
+let customerBank = 1000
+// let crashMode = 0 // 0 = off, 1 = on
+
+const app = express()
+app.use(cors())
+app.use(express.json())
 
 app.post('/page', (req, res) => {
-  const result = page;
-  res.json({ result });
-});
+  const result = page
+  res.json({ result })
+})
 
 app.post('/data', (req, res) => {
   const result = {
     websiteInventory,
     warehouseInventory,
     customerBank,
-  };
-  res.json({ result });
+  }
+  res.json({ result })
 })
 
 app.post('/incrementPage', (req, res) => {
-  page = page + 1;
-  const result = page;
-  res.json({ result });
-});
+  page = page + 1
+  const result = page
+  res.json({ result })
+})
 
 app.post('/decrementPage', (req, res) => {
-  page = page - 1;
-  const result = page;
-  res.json({ result });
-});
+  page = page - 1
+  const result = page
+  res.json({ result })
+})
 
 app.post('/addToCart', (req, res) => {
   if (websiteInventory > 0) {
-    websiteInventory = websiteInventory - 1;
-    res.status(200);
+    websiteInventory = websiteInventory - 1
+    res.status(200)
   } else {
-    res.status(400); 
+    res.status(400)
   }
-  const result = websiteInventory;
-  res.json({ result });
-});
+  const result = websiteInventory
+  res.json({ result })
+})
 
 app.post('/confirmPayment', async (req, res) => {
-  warehouseInventory = warehouseInventory - 1;
-  customerBank = customerBank - 10;
-  console.log("1");
-  let res1 = hi(1);
-  console.log(res1);
-  let res2 = await continuouslyRetryFunction("arn:aws:lambda:us-east-1:443370680529:function:confirm_purchase:31")
-  console.log(res2);
-  console.log("2");
+  warehouseInventory = warehouseInventory - 1
+  customerBank = customerBank - 10
+
+  console.log('1')
+  let res1 = hi(1)
+  console.log(res1)
+
+  const LAMBDA_FUNCTION_ARN = 'arn:aws:lambda:us-east-1:000000000000:function:demo_purchase_function'
+
+  let res2 = await continuouslyRetryFunction(LAMBDA_FUNCTION_ARN)
+
+  console.log(res2)
+  console.log('2')
   const result = {
     warehouseInventory,
-    customerBank
-  };
-  res.json({ result });
-});
+    customerBank,
+  }
+  res.json({ result })
+})
 
-app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+app.post('/createCrashTable', async (req, res) => {
+  await createCrashTable()
+
+  res.json({ ok: 'ok' })
+})
+
+app.post('/createInventoryTable', async (req, res) => {
+  await createInventoryTable()
+  res.json({ ok: 'ok' })
+})
+
+app.post('/toggleCrash', async (req, res) => {
+  await toggleCrashTable()
+  res.json({ ok: 'ok' })
+})
+
+app.listen(3000, () => console.log('Server running on http://localhost:3000'))
