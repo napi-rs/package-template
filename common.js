@@ -7,6 +7,7 @@ const customerBankText = document.getElementById('customerBank')
 const progressBar = document.getElementById('progressBar')
 const progressText = document.getElementById('progressText')
 const button = document.getElementById('mainButton')
+const crashButton = document.getElementById('crashApp')
 const url = 'http://localhost:3000'
 let page
 let confirmLoading = false;
@@ -27,6 +28,16 @@ async function getData() {
   websiteInventory = data.result.websiteInventory
   warehouseInventory = data.result.warehouseInventory
   customerBank = data.result.customerBank
+}
+
+function updateCrashButton(state) {
+  if (state === 1) {
+    crashButton.innerHTML = 'Reboot Application'
+    crashButton.style.background = '#128132'
+  } else {
+    crashButton.innerHTML = 'Crash Application'
+    crashButton.style.background = '#F74C00'
+  }
 }
 
 function updateLoadingButton() {
@@ -127,8 +138,10 @@ document.getElementById('crashApp').addEventListener('click', async () => {
 
     const data = await response.json()
     if (data.crashed === '1') {
+      updateCrashButton(1)
       alert('Crash mode enabled!')
     } else {
+      updateCrashButton(0)
       alert('Crash mode disabled!')
     }
   } catch (error) {
