@@ -4,7 +4,7 @@ const cors = require('cors')
 const { continuouslyRetryFunction, createCrashTable, createInventoryTable, toggleCrashTable } = require('./index')
 
 let page = 0
-let websiteInventory = 100
+let websiteInventory = 1000
 let warehouseInventory = 100
 let customerBank = 1000
 // let crashMode = 0 // 0 = off, 1 = on
@@ -51,25 +51,32 @@ app.post('/addToCart', (req, res) => {
 })
 
 app.post('/confirmPayment', async (req, res) => {
-  warehouseInventory = warehouseInventory - 1
-  customerBank = customerBank - 10
-
-  console.log('1')
+  console.log('Confirming payment!')
   const LAMBDA_FUNCTION_ARN = 'arn:aws:lambda:us-east-1:000000000000:function:demo_purchase_function'
 
-  let res2 = await continuouslyRetryFunction(LAMBDA_FUNCTION_ARN)
+  const purchaseResponseString = await continuouslyRetryFunction(LAMBDA_FUNCTION_ARN)
 
-  console.log(res2)
-  console.log('2')
-  const result = {
-    warehouseInventory,
-    customerBank,
-  }
-  res.json({ result })
+  // right now the response is double serialized so we need to fix that, but for now
+  // we're just double deserializing it
+  let purchaseResponse = JSON.parse(purchaseResponseString)
+  purchaseResponse = JSON.parse(purchaseResponse)
+  console.log(`Got response ${purchaseResponse}`)
+
+  res.json({
+    warehouseInventory: purchaseResponse.inventory,
+    customerBank: 88888,
+  })
 })
 
 app.post('/createCrashTable', async (req, res) => {
   await createCrashTable()
+
+  res.json({ ok: 'ok' })
+})
+
+app.post('/createTables', async (req, res) => {
+  await createCrashTable()
+  await createInventoryTable()
 
   res.json({ ok: 'ok' })
 })
@@ -81,7 +88,7 @@ app.post('/createInventoryTable', async (req, res) => {
 
 app.post('/toggleCrash', async (req, res) => {
   let res2 = await toggleCrashTable()
-  console.log("res: ", res2);
+  console.log('res: ', res2)
   res.json({ crashed: res2 })
 })
 

@@ -74,8 +74,8 @@ async function confirmPayment() {
     method: 'POST',
   })
   const data = await confirmPaymentRes.json()
-  warehouseInventory = data.result.warehouseInventory
-  customerBank = data.result.customerBank
+  warehouseInventory = data.warehouseInventory
+  customerBank = data.customerBank
 
   const decrementPageUrl = `${url}/decrementPage`
   const decrementPageRes = await fetch(decrementPageUrl, {
@@ -111,7 +111,7 @@ document.getElementById('crashApp').addEventListener('click', async () => {
     }
 
     const data = await response.json()
-    if (data.crashed === "1") {
+    if (data.crashed === '1') {
       alert('Crash mode enabled!')
     } else {
       alert('Crash mode disabled!')
