@@ -52,7 +52,7 @@ body {
 
 .container {
     display: flex;
-    margin: 20px;
+    margin: 40px 0px;
     width: 88%;
 }
 
