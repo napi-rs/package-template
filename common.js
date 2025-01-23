@@ -111,7 +111,7 @@ document.getElementById('crashApp').addEventListener('click', async () => {
     }
 
     const data = await response.json()
-    if (data.result === 1) {
+    if (data.crashed === "1") {
       alert('Crash mode enabled!')
     } else {
       alert('Crash mode disabled!')

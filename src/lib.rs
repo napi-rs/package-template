@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use aws_config::BehaviorVersion;
-use aws_sdk_dynamodb::types::{AttributeValue, ProvisionedThroughput};
+use aws_sdk_dynamodb::types::{AttributeValue, ProvisionedThroughput, AttributeDefinition, KeySchemaElement};
 use aws_sdk_lambda::types::InvocationType::RequestResponse;
 use flowstate::flowstate_client::FlowstateClient;
 use flowstate::linked_daal::LinkedDAAL;
@@ -66,6 +66,7 @@ pub async fn create_inventory_table() -> Result<()> {
 
   let table_name = INVENTORY_TABLE;
   let inventory_table = LinkedDAAL::use_linked_daal(&flowstate_client.aws_client, table_name).await;
+  flowstate_client.register_daal(table_name, inventory_table.clone());
 
   flowstate_client.register_daal(table_name, inventory_table);
   flowstate_client
@@ -93,23 +94,23 @@ pub async fn create_crash_table() -> Result<()> {
     .build()
     .map_err(|e| Error::from_reason(format!("Throughput provisioning {:?}", e)))?;
 
+  let attribute_dfns = AttributeDefinition::builder()
+    .attribute_name("id")
+    .attribute_type("S".into())
+    .build()
+    .map_err(|e| Error::from_reason(format!("Attribute definitions {:?}", e)))?;
+
+  let key_schema = KeySchemaElement::builder()
+    .attribute_name("id")
+    .key_type("HASH".into())
+    .build()
+    .map_err(|e| Error::from_reason(format!("Key scheme {:?}", e)))?;
+
   aws_client
     .create_table()
     .table_name(CRASH_TABLE)
-    .attribute_definitions(
-      aws_sdk_dynamodb::types::AttributeDefinition::builder()
-        .attribute_name("mode")
-        .attribute_type("S".into())
-        .build()
-        .unwrap(),
-    )
-    .key_schema(
-      aws_sdk_dynamodb::types::KeySchemaElement::builder()
-        .attribute_name("mode")
-        .key_type("HASH".into())
-        .build()
-        .unwrap(),
-    )
+    .attribute_definitions(attribute_dfns)
+    .key_schema(key_schema)
     .provisioned_throughput(throughput)
     .send()
     .await
@@ -118,7 +119,8 @@ pub async fn create_crash_table() -> Result<()> {
   aws_client
     .put_item()
     .table_name(CRASH_TABLE)
-    .item("mode", AttributeValue::S("0".to_string()))
+    .item("id", AttributeValue::S("mode".to_string()))
+    .item("value", AttributeValue::S("0".to_string()))
     .send()
     .await
     .map_err(|e| Error::from_reason(format!("Inserting initial value failed {:?}", e)))?;
@@ -128,7 +130,7 @@ pub async fn create_crash_table() -> Result<()> {
 }
 
 #[napi]
-pub async fn toggle_crash_table() -> Result<()> {
+pub async fn toggle_crash_table() -> Result<String> {
   let config = aws_config::defaults(BehaviorVersion::latest())
     .region("us-east-1")
     .endpoint_url(AWS_ENDPOINT_URL)
@@ -140,13 +142,13 @@ pub async fn toggle_crash_table() -> Result<()> {
   let curr_val = aws_client
     .get_item()
     .table_name(CRASH_TABLE)
-    .key("mode", AttributeValue::S("mode".to_string()))
+    .key("id", AttributeValue::S("mode".to_string()))
     .send()
     .await
     .map_err(|e| Error::from_reason(format!("Reading from crash table failed {:?}", e)))?;
 
   if let Some(value_map) = curr_val.item() {
-    if let Some(crash_value) = value_map.get("key") {
+    if let Some(crash_value) = value_map.get("value") {
       let current_value = crash_value.as_s().map_err(|e| {
         Error::from_reason(format!(
           "Crash value didn't map to string correctly {:?}",
@@ -155,22 +157,23 @@ pub async fn toggle_crash_table() -> Result<()> {
       })?;
 
       // prob add some null / not found whatever checks here...
+      println!("current value: {}", current_value);
       let new_value = if current_value == "0" { "1" } else { "0" };
 
       // then actually update the table with this new value
       aws_client
         .put_item()
         .table_name(CRASH_TABLE)
-        .item("mode", AttributeValue::S(new_value.to_string()))
+        .item("id", AttributeValue::S("mode".to_string()))
+        .item("value", AttributeValue::S(new_value.to_string()))
         .send()
         .await
         .map_err(|e| Error::from_reason(format!("Reading from crash table failed {:?}", e)))?;
+      return Ok(new_value.to_string());
     } else {
       return Err(Error::from_reason("Couldn't get crash value correctly!"));
     }
   } else {
     return Err(Error::from_reason("Couldn't get item value map correctly!"));
   }
-
-  Ok(())
 }

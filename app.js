@@ -80,8 +80,9 @@ app.post('/createInventoryTable', async (req, res) => {
 })
 
 app.post('/toggleCrash', async (req, res) => {
-  await toggleCrashTable()
-  res.json({ ok: 'ok' })
+  let res2 = await toggleCrashTable()
+  console.log("res: ", res2);
+  res.json({ crashed: res2 })
 })
 
 app.listen(3000, () => console.log('Server running on http://localhost:3000'))
