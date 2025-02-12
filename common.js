@@ -104,6 +104,7 @@ document.getElementById('crashApp').addEventListener('click', async () => {
 document.getElementById('makeTables').addEventListener('click', async () => {
   const makeCrashTable = `${url}/createCrashTable`
   const makeInventoryTable = `${url}/createInventoryTable`
+  const makeBankTable = `${url}/createBankTable`
   try {
     const crashResponse = await fetch(makeCrashTable, {
       method: 'POST',
@@ -120,6 +121,14 @@ document.getElementById('makeTables').addEventListener('click', async () => {
       throw new Error('Failed to create inventory table')
     }
     console.log('Inventory table created successfully')
+
+    const bankResponse = await fetch(makeBankTable, {
+      method: 'POST',
+    })
+    if (!bankResponse.ok) {
+      throw new Error('Failed to create bank table')
+    }
+    console.log('Bank table created successfully')
 
     alert('Tables created successfully!')
   } catch (error) {

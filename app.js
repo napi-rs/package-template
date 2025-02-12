@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 
-const { continuouslyRetryFunction, createCrashTable, createInventoryTable, toggleCrashTable } = require('./index')
+const { continuouslyRetryFunction, createCrashTable, createInventoryTable, createBankTable, toggleCrashTable } = require('./index')
 
 let websiteInventory = 1000
 let warehouseInventory = 100
@@ -51,12 +51,18 @@ app.post('/createCrashTable', async (req, res) => {
 app.post('/createTables', async (req, res) => {
   await createCrashTable()
   await createInventoryTable()
+  await createBankTable()
 
   res.json({ ok: 'ok' })
 })
 
 app.post('/createInventoryTable', async (req, res) => {
   await createInventoryTable()
+  res.json({ ok: 'ok' })
+})
+
+app.post('/createBankTable', async (req, res) => {
+  await createBankTable()
   res.json({ ok: 'ok' })
 })
 

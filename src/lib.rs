@@ -15,6 +15,7 @@ use serde_json::json;
 
 const CRASH_TABLE: &str = "crash_table";
 const INVENTORY_TABLE: &str = "inventory_table";
+const BANK_TABLE: &str = "bank_table";
 const AWS_ENDPOINT_URL: &str = "http://localhost:4566";
 
 #[napi]
@@ -92,6 +93,28 @@ pub async fn create_inventory_table() -> Result<()> {
     .map_err(|e| Error::from_reason(format!("Initializing website inventory failed {:?}", e)))?;
 
   println!("finished creating inventory table!");
+  Ok(())
+}
+
+#[napi]
+pub async fn create_bank_table() -> Result<()> {
+  let aws_client =
+    AWSClient::new_with_endpoints("us-east-1", Some(AWS_ENDPOINT_URL.to_string()), None).await;
+  let mut flowstate_client = FlowstateClient::new_async(Arc::new(aws_client), "ignore")
+    .await
+    .map_err(|e| Error::from_reason(format!("Creating flowstate client failed {:?}", e)))?;
+
+  let table_name = BANK_TABLE;
+  let bank_table = LinkedDAAL::use_linked_daal(&flowstate_client.aws_client, table_name).await;
+  flowstate_client.register_daal(table_name, bank_table.clone());
+
+  flowstate_client.register_daal(table_name, bank_table);
+  flowstate_client
+    .write(table_name, "bank_amount", "1000")
+    .await
+    .map_err(|e| Error::from_reason(format!("Initializing bank inventory failed {:?}", e)))?;
+
+  println!("finished creating bank inventory table!");
   Ok(())
 }
 
