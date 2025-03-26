@@ -44,7 +44,7 @@
   },
   "scripts": {
     "artifacts": "napi artifacts",
-    "bench": "node --import @swc-node/register/esm-register benchmark/bench.ts",
+    "bench": "node --import @oxc-node/core/register benchmark/bench.ts",
     "build": "napi build --platform --release",
     "build:debug": "napi build --platform",
     "format": "run-p format:prettier format:rs format:toml",
@@ -59,18 +59,17 @@
   },
   "devDependencies": {
     "@napi-rs/cli": "^2.18.4",
-    "@swc-node/register": "^1.10.6",
-    "@swc/core": "^1.6.13",
+    "@oxc-node/core": "^0.0.21",
     "@taplo/cli": "^0.7.0",
-    "ava": "^6.1.3",
-    "chalk": "^5.3.0",
-    "husky": "^9.0.11",
-    "lint-staged": "^15.2.7",
-    "npm-run-all2": "^7.0.0",
-    "oxlint": "^0.15.0",
-    "prettier": "^3.3.3",
-    "tinybench": "^3.0.0",
-    "typescript": "^5.5.3"
+    "ava": "^6.2.0",
+    "chalk": "^5.4.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
+    "npm-run-all2": "^7.0.2",
+    "oxlint": "^0.16.3",
+    "prettier": "^3.5.3",
+    "tinybench": "^4.0.1",
+    "typescript": "^5.8.2"
   },
   "lint-staged": {
     "*.@(js|ts|tsx)": [
@@ -94,7 +93,7 @@
     },
     "nodeArguments": [
       "--import",
-      "@swc-node/register/esm-register"
+      "@oxc-node/core/register"
     ]
   },
   "prettier": {
@@ -104,5 +103,5 @@
     "singleQuote": true,
     "arrowParens": "always"
   },
-  "packageManager": "yarn@4.6.0"
+  "packageManager": "yarn@4.7.0"
 }
