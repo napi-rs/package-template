@@ -89,7 +89,7 @@
     "timeout": "2m",
     "workerThreads": false,
     "environmentVariables": {
-      "TS_NODE_PROJECT": "./tsconfig.json"
+      "OXC_TSCONFIG_PATH": "./__test__/tsconfig.json"
     },
     "nodeArguments": [
       "--import",
