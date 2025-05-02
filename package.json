@@ -65,7 +65,7 @@
     "chalk": "^5.4.1",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.0",
-    "npm-run-all2": "^7.0.2",
+    "npm-run-all2": "^8.0.0",
     "oxlint": "^0.16.3",
     "prettier": "^3.5.3",
     "tinybench": "^4.0.1",
