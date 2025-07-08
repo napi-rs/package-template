@@ -64,7 +64,7 @@
     "@napi-rs/cli": "^3.0.0-alpha.89",
     "@oxc-node/core": "^0.0.29",
     "@taplo/cli": "^0.7.0",
-    "@tybys/wasm-util": "^0.9.0",
+    "@tybys/wasm-util": "^0.10.0",
     "ava": "^6.4.0",
     "chalk": "^5.4.1",
     "husky": "^9.1.7",
