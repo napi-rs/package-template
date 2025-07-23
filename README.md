@@ -9,33 +9,13 @@
 1. Click **Use this template**.
 2. **Clone** your project.
 3. Run `yarn install` to install dependencies.
-4. Run `npx napi rename -n [name]` command under the project folder to rename your package.
+4. Run `yarn napi rename -n [@your-scope/package-name] -b [binary-name]` command under the project folder to rename your package.
 
 ## Install this test package
 
 ```
 yarn add @napi-rs/package-template
 ```
-
-## Support matrix
-
-### Operating Systems
-
-|                  | node14 | node16 | node18 |
-| ---------------- | ------ | ------ | ------ |
-| Windows x64      | ✓      | ✓      | ✓      |
-| Windows x32      | ✓      | ✓      | ✓      |
-| Windows arm64    | ✓      | ✓      | ✓      |
-| macOS x64        | ✓      | ✓      | ✓      |
-| macOS arm64      | ✓      | ✓      | ✓      |
-| Linux x64 gnu    | ✓      | ✓      | ✓      |
-| Linux x64 musl   | ✓      | ✓      | ✓      |
-| Linux arm gnu    | ✓      | ✓      | ✓      |
-| Linux arm64 gnu  | ✓      | ✓      | ✓      |
-| Linux arm64 musl | ✓      | ✓      | ✓      |
-| Android arm64    | ✓      | ✓      | ✓      |
-| Android armv7    | ✓      | ✓      | ✓      |
-| FreeBSD x64      | ✓      | ✓      | ✓      |
 
 ## Ability
 
@@ -49,7 +29,7 @@ With [ava](https://github.com/avajs/ava), run `yarn test/npm run test` to testin
 
 ### CI
 
-With GitHub Actions, each commit and pull request will be built and tested automatically in [`node@14`, `node@16`, `@node18`] x [`macOS`, `Linux`, `Windows`] matrix. You will never be afraid of the native addon broken in these platforms.
+With GitHub Actions, each commit and pull request will be built and tested automatically in [`node@20`, `@node22`] x [`macOS`, `Linux`, `Windows`] matrix. You will never be afraid of the native addon broken in these platforms.
 
 ### Release
 
