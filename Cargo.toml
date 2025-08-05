@@ -17,5 +17,5 @@ napi-derive = "3.0.0"
 napi-build = "2"
 
 [profile.release]
-lto = true
+lto   = true
 strip = "symbols"
