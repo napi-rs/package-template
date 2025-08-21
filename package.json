@@ -5,6 +5,7 @@
   "main": "index.js",
   "repository": "git@github.com:napi-rs/package-template.git",
   "license": "MIT",
+  "browser": "browser.js",
   "keywords": [
     "napi-rs",
     "NAPI",
@@ -15,7 +16,8 @@
   ],
   "files": [
     "index.d.ts",
-    "index.js"
+    "index.js",
+    "browser.js"
   ],
   "napi": {
     "binaryName": "package-template",
