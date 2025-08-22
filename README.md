@@ -79,7 +79,7 @@ When you want to release the package:
 ```bash
 npm version [<newversion> | major | minor | patch | premajor | preminor | prepatch | prerelease [--preid=<prerelease-id>] | from-git]
 
-git push --tags
+git push
 ```
 
 GitHub actions will do the rest job for you.
