@@ -60,25 +60,26 @@
     "lint": "oxlint .",
     "prepublishOnly": "napi prepublish -t npm",
     "test": "ava",
+    "preversion": "napi build --platform && git add .",
     "version": "napi version",
     "prepare": "husky"
   },
   "devDependencies": {
-    "@emnapi/core": "^1.4.5",
-    "@emnapi/runtime": "^1.4.5",
-    "@napi-rs/cli": "^3.0.3",
+    "@emnapi/core": "^1.5.0",
+    "@emnapi/runtime": "^1.5.0",
+    "@napi-rs/cli": "^3.2.0",
     "@oxc-node/core": "^0.0.32",
     "@taplo/cli": "^0.7.0",
     "@tybys/wasm-util": "^0.10.0",
     "ava": "^6.4.1",
-    "chalk": "^5.4.1",
+    "chalk": "^5.6.2",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.2",
+    "lint-staged": "^16.1.6",
     "npm-run-all2": "^8.0.4",
-    "oxlint": "^1.8.0",
+    "oxlint": "^1.14.0",
     "prettier": "^3.6.2",
-    "tinybench": "^5.0.0",
-    "typescript": "^5.8.3"
+    "tinybench": "^5.0.1",
+    "typescript": "^5.9.2"
   },
   "lint-staged": {
     "*.@(js|ts|tsx)": [
