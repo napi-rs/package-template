@@ -7,7 +7,7 @@
     "rewriteRelativeImportExtensions": true,
     "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,
-    "types": []
+    "types": ["node"]
   },
   "include": ["."],
   "exclude": ["node_modules"]
