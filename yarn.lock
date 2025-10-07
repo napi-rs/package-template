@@ -540,7 +540,6 @@ __metadata:
     "@taplo/cli": "npm:^0.7.0"
     "@tybys/wasm-util": "npm:^0.10.0"
     "@types/node": "npm:^24.7.0"
-    chalk: "npm:^5.6.2"
     husky: "npm:^9.1.7"
     lint-staged: "npm:^16.1.6"
     npm-run-all2: "npm:^8.0.4"
@@ -1354,7 +1353,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^5.6.0, chalk@npm:^5.6.2":
+"chalk@npm:^5.6.0":
   version: 5.6.2
   resolution: "chalk@npm:5.6.2"
   checksum: 10c0/99a4b0f0e7991796b1e7e3f52dceb9137cae2a9dfc8fc0784a550dc4c558e15ab32ed70b14b21b52beb2679b4892b41a0aa44249bcb996f01e125d58477c6976
