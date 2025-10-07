@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import { plus100 } from '../index'
+import { plus100 } from '../index.js'
 
 test('sync function from native code', (t) => {
   const fixture = 42
