@@ -68,7 +68,7 @@
     "@emnapi/core": "^1.5.0",
     "@emnapi/runtime": "^1.5.0",
     "@napi-rs/cli": "^3.2.0",
-    "@oxc-node/core": "^0.0.32",
+    "@oxc-node/core": "^0.0.34",
     "@taplo/cli": "^0.7.0",
     "@tybys/wasm-util": "^0.10.0",
     "ava": "^6.4.1",
@@ -113,5 +113,5 @@
     "singleQuote": true,
     "arrowParens": "always"
   },
-  "packageManager": "yarn@4.10.3"
+  "packageManager": "yarn@4.11.0"
 }
