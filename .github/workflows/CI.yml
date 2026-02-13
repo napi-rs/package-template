@@ -159,7 +159,7 @@ jobs:
           RUSTUP_IO_THREADS: 1
         with:
           operating_system: freebsd
-          version: '14.3'
+          version: '15.0'
           memory: 8G
           cpu_count: 3
           environment_variables: 'DEBUG RUSTUP_IO_THREADS'
@@ -300,11 +300,12 @@ jobs:
       - run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
         if: ${{ contains(matrix.target, 'armv7') }}
       - name: Test bindings
-        uses: addnab/docker-run-action@v3
+        uses: tj-actions/docker-run@v2
         with:
           image: ${{ steps.docker.outputs.IMAGE }}
+          name: test-bindings-${{ matrix.target }}
           options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }} --platform ${{ steps.docker.outputs.PLATFORM }}
-          run: yarn test
+          args: yarn test
   test-wasi:
     name: Test WASI target
     needs:
