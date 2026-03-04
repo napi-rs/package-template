@@ -293,7 +293,7 @@ jobs:
         run: ls -R .
         shell: bash
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
         if: ${{ contains(matrix.target, 'armv7') }}
         with:
           platforms: all
