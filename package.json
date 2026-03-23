@@ -79,7 +79,7 @@
     "oxlint": "^1.14.0",
     "prettier": "^3.6.2",
     "tinybench": "^6.0.0",
-    "typescript": "^5.9.2"
+    "typescript": "^6.0.0"
   },
   "lint-staged": {
     "*.@(js|ts|tsx)": [
