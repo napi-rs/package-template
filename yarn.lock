@@ -658,6 +658,7 @@ __metadata:
     "@emnapi/core": "npm:^2.0.0-alpha.4"
     "@emnapi/runtime": "npm:^2.0.0-alpha.4"
     "@napi-rs/cli": "npm:^3.8.6"
+    "@napi-rs/wasm-runtime": "npm:^1.2.3"
     "@oxc-node/core": "npm:^0.1.0"
     "@tybys/wasm-util": "npm:^0.10.3"
     ava: "npm:^8.0.1"
@@ -847,7 +848,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@napi-rs/wasm-runtime@npm:^1.1.2, @napi-rs/wasm-runtime@npm:^1.1.6":
+"@napi-rs/wasm-runtime@npm:^1.1.2, @napi-rs/wasm-runtime@npm:^1.1.6, @napi-rs/wasm-runtime@npm:^1.2.3":
   version: 1.2.3
   resolution: "@napi-rs/wasm-runtime@npm:1.2.3"
   dependencies:
