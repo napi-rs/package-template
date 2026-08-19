@@ -128,3 +128,4 @@ Cargo.lock
 !.yarn/sdks
 !.yarn/versions
 /npm
+*.wasm
