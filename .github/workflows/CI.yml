@@ -93,7 +93,7 @@ jobs:
           - host: ubuntu-latest
             target: wasm32-wasip1-threads
             build: yarn build --target wasm32-wasip1-threads
-    name: stable - ${{ matrix.settings.target }} - node@22
+    name: stable - ${{ matrix.settings.target }} - node@24
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v7
@@ -121,7 +121,7 @@ jobs:
       - uses: mlugg/setup-zig@v2
         if: ${{ contains(matrix.settings.target, 'musl') }}
         with:
-          version: 0.14.1
+          version: 0.15.2
       - name: Install cargo-zigbuild
         uses: taiki-e/install-action@v2
         if: ${{ contains(matrix.settings.target, 'musl') }}
@@ -215,6 +215,7 @@ jobs:
         node:
           - '22'
           - '24'
+          - '26'
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v7
@@ -252,9 +253,12 @@ jobs:
         node:
           - '22'
           - '24'
+          - '26'
         exclude:
           - target: armv7-unknown-linux-gnueabihf
             node: '24'
+          - target: armv7-unknown-linux-gnueabihf
+            node: '26'
     runs-on: ${{ contains(matrix.target, 'aarch64') && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v7
@@ -308,7 +312,7 @@ jobs:
           image: ${{ steps.docker.outputs.IMAGE }}
           name: test-bindings-${{ matrix.target }}
           options: -v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }} --platform ${{ steps.docker.outputs.PLATFORM }}
-          args: yarn test
+          args: npm run test
   test-wasi:
     name: Test WASI target
     needs:
@@ -322,9 +326,7 @@ jobs:
           node-version: 24
           cache: yarn
       - name: Install dependencies
-        run: |
-          yarn config set supportedArchitectures.cpu "wasm32"
-          yarn install
+        run: yarn install
       - name: Download artifacts
         uses: actions/download-artifact@v8
         with:
@@ -336,7 +338,7 @@ jobs:
       - name: Test bindings
         run: yarn test
         env:
-          NAPI_RS_FORCE_WASI: 1
+          NAPI_RS_FORCE_WASI: 'true'
   publish:
     name: Publish
     runs-on: ubuntu-latest
