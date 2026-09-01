@@ -76,7 +76,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.3.0",
     "npm-run-all2": "^9.0.3",
-    "oxfmt": "^0.64.0",
+    "oxfmt": "^0.66.0",
     "oxlint": "^1.79.0",
     "prettier": "^3.9.6",
     "tinybench": "^6.1.3",
