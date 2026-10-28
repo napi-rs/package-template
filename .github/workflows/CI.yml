@@ -30,7 +30,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 26
           cache: 'yarn'
 
       - name: Install
@@ -100,7 +100,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 26
           cache: yarn
       - name: Install
         uses: dtolnay/rust-toolchain@stable
@@ -323,7 +323,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 26
           cache: yarn
       - name: Install dependencies
         run: yarn install
@@ -356,7 +356,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 26
           cache: yarn
       - name: Install dependencies
         run: yarn install
